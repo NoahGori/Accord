@@ -16,5 +16,6 @@ Discord Bot:
 	Timeline management
 	Goal list
 	Update Features.md
+	display pull request
 	git CLI functionality
 	Place were basic commands and simple viewing of the app will take place
