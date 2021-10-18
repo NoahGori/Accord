@@ -18,5 +18,5 @@ MongoDB
 Discord.js
 
 Discord.js
-	Mongoose to connect to mongodb
-	dotenv
+	1) Mongoose to connect to mongodb
+	2) dotenv
