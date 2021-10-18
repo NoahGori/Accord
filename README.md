@@ -8,4 +8,15 @@ Discord.js
 	
 Front End Javascript framework (React, Angular, Vue)
 	
-Back End - More than likely backend Javascript/Typescript framework like Express
+Probably won't need it Back End - More than likely backend Javascript/Typescript framework like Express
+
+
+
+Tech Stack:
+
+MongoDB
+Discord.js
+
+Discord.js
+	Mongoose to connect to mongodb
+	dotenv
