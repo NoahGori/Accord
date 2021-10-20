@@ -11,6 +11,9 @@ WebApp:
 	Update Features.md
 	git CLI functionality
 	More comprehensive view of the project than the discord will we have
+	
+backend:
+	delete github PAT tokens after expiration date
 
 Discord Bot:
 	Timeline management
