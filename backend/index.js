@@ -1,13 +1,7 @@
 const { Pool, Client } = require('pg');
 const { Sequelize } = require('sequelize');
 
-const client = new Client({
-    user: "accord",
-    password: "ewUn^sSVEurf",
-    host: "76.226.74.200",
-    port: 5432,
-    database: "accorddb"
-})
+
 
 //const sequelize = new Sequelize();
 
