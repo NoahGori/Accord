@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: 'config/.env'});
 
 const { Pool, Client } = require('pg');
 const { Sequelize } = require('sequelize');
@@ -11,7 +11,7 @@ const client = new Client({
     database: process.env.DB_NAME
 })
 
-const sequelize = new Sequelize(process.env.DB_URL);
+//const sequelize = new Sequelize(process.env.DB_URL);
 
 //const sequelize = new Sequelize();
 
