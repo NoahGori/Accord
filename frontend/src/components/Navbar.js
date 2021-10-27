@@ -1,13 +1,7 @@
 import { 
 	Navbar,
 	Nav,
-	NavDropdown,
-	Form,
-	FormControl,
-	Button,
 	Container,
-	Row,
-	Col
 } from 'react-bootstrap'
 
 import DiscordLogo from 'src/assets/Discord-Logo-Color.svg';
