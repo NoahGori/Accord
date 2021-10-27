@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-const port = process.env.REACT_APP_backendPort | 3001;
+const port = process.env.PORT | 3001;
 
 import accounts from './accounts.js';
 import timeline from './timeline.js';
