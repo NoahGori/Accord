@@ -3,33 +3,43 @@ import {
 	Row,
 	Col
 } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 import './Timeline.css';
 import Navbar from 'src/components/Navbar.js';
-
-
+import LoadingPage from 'src/components/LoadingPage.js';
 
 const Timeline = () => {
-
 	const [isLoading, set_isLoading] = useState(true);
+	const [page, set_page] = useState(false);
+
+	// This gets our website key so we can log in securely
+	const GetWebsiteKey = () => {
+		return new URLSearchParams(useLocation().search).get('website_key');
+	}
+
+	let website_key = GetWebsiteKey;
+
+
+	useEffect(() => {
+		if (isLoading) {
+		}
+	});
 
 	if (isLoading) {
 		return (
 			<>
-				{Navbar}
-				<div style={{
-					width: '100%',
-					height: '100%',
-					top: '0px',
-					left: '0px'
-				}}>
-				</div>
+				{Navbar()}
+				{LoadingPage()}
 			</>
 		);
 	}
 
 	return (
 		<>
+			{Navbar()}
+			{page}
 		</>
 	);
 }

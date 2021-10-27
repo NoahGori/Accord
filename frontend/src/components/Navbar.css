@@ -16,4 +16,6 @@ a:active{
 	box-shadow: 0px 0px 20px #0f0f0f;
 	position: fixed;
 	width: 100%;
+
+	z-index: 10000;
 }

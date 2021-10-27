@@ -20,7 +20,7 @@ function App() {
 			<BrowserRouter>
 				<Switch>
 					<Route exact path='/' component={LandingPage} />
-					<Route exact path='/Timeline' component={Timeline} />
+					<Route exact path='/timeline' component={Timeline} />
 				</Switch>
 			</BrowserRouter>
 		</div>

@@ -1,6 +1,6 @@
-const { Client } = require('pg')
+const Pool = require('pg').Pool
 
-const client = new Client({
+const pool = new Pool({
 	user: process.env.REACT_APP_dbuser,
 	host: process.env.REACT_APP_dbhost,
 	database: process.env.REACT_APP_dbname,
@@ -8,4 +8,4 @@ const client = new Client({
 	port: process.env.REACT_APP_dbport
 });
 
-module.exports = { client }
+module.exports = { pool }
