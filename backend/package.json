@@ -12,7 +12,6 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "is-alphanumeric": "^1.0.0",
     "is-alphanumerical": "^2.0.0",
     "pg": "^8.7.1"
   }
