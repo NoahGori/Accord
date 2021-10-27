@@ -1,0 +1,33 @@
+{
+  "name": "accord",
+  "version": "1.0.0",
+  "description": "Discord project manager",
+  "scripts": {
+    "start-dev": "nodemon --exec npm start",
+    "prestart": "node src/deploy-commands.js",
+    "start": "node src/bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoahGori/Accord.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NoahGori/Accord/issues"
+  },
+  "homepage": "https://github.com/NoahGori/Accord#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.7.0",
+    "@discordjs/rest": "0.1.0-canary.0",
+    "@octokit/rest": "^18.12.0",
+    "axios": "^0.23.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.2.0",
+    "octokit": "^1.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
