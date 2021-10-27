@@ -29,8 +29,14 @@ const Timeline = () => {
 					if (error) {
 						console.error(error);
 					} else {
-						const user = result.data[0]
-						console.log(user);
+						const user = result.data[0];
+
+						axios.get(`${backendURL}/timeline?guild_id=${guild_id}`)
+							.then((result, error) => {
+								const timeline = result.data[0];
+
+								console.log(user, timeline);
+							});
 					}
 				})
 		}
