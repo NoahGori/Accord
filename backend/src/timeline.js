@@ -25,7 +25,7 @@ const getTimelineViaGuildId = (guild_id) => {
 
 const getTimelineAssignmentObjectsViaTimelineIdAndDiscordId = (timeline_id, discord_id) => {
 	return new Promise(function(resolve, reject) {
-		if (isAlphanumerical(guild_id)) {
+		if (isAlphanumerical(timeline_id) && isAlphanumerical(discord_id)) {
 			pool.query(`
 			SELECT *
 			FROM timeline_assignment_objects
@@ -43,20 +43,38 @@ const getTimelineAssignmentObjectsViaTimelineIdAndDiscordId = (timeline_id, disc
 	});
 }
 
-const getTimelinePermissionsViaTimelineIdAndDiscordId = (timeline_id, discord_id) => {
+const getTimelineAssignmentObjectsViaGuildIdAndWebsiteKey = (guild_id, website_key) => {
 	return new Promise(function(resolve, reject) {
-		if (isAlphanumerical(guild_id)) {
-			poo.query(`
-			SELECT *
-			FROM timeline_permission
-			WHERE timeline_id='${timeline_id}' AND discord_id='${discord_id}'`,
+		var tempDID; 
+		if (isAlphanumerical(guild_id) && isAlphanumerical(website_key)) {
+			//Temporarily places discord id from next query here for later use
+			pool.query(` 
+			SELECT discord_id
+			FROM accounts
+			WHERE website_key = '${website_key}';
+			`,
 				(error, results) => {
 					if (error) {
 						reject(error);
 					} else {
+						tempDID = results.rows[0].discord_id;
+					}
+				});
+
+			pool.query(` 
+			SELECT *
+			FROM timeline_permission
+			WHERE discord_id = '${tempDID}';
+			`,
+				(error, results) => {
+					if (error) {
+						reject(error);
+					} else {
+						console.log(results.rows)
 						resolve(results.rows);
 					}
 				});
+		
 		} else {
 			reject(`timeline_id or discord_id is not alphanumerical:\n\r${timeline_id}, ${discord_id}`);
 		}
@@ -67,9 +85,9 @@ const getTimelinePermissionsViaTimelineIdAndDiscordId = (timeline_id, discord_id
 
 
 
-
 // EXPORTS
 export default {
 	getTimelineViaGuildId,
-	getTimelineAssignmentObjectsViaTimelineIdAndDiscordId
+	getTimelineAssignmentObjectsViaTimelineIdAndDiscordId,
+	getTimelineAssignmentObjectsViaGuildIdAndWebsiteKey
 }
