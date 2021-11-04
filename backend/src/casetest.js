@@ -5,10 +5,10 @@ const backendURL='http://localhost:3001'
 const testGetAccountVia_discord_id = () => {
     console.log('casetest running');
   axios.post(`${backendURL}/accounts`, {
-      discord_id: '2079225401637602323',
-      github_username: 'johndoe3',
-      discord_username: 'johndoe3#3213',
-      discord_email: 'johndoe3@gmail.com'
+      discord_id: '20792254016376023225',
+      github_username: 'johndoe5',
+      discord_username: 'johndoe5#3215',
+      discord_email: 'johndoe5@gmail.com'
   });
   
   console.log('casetest ran');
