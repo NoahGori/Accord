@@ -13,7 +13,8 @@ WebApp:
 	More comprehensive view of the project than the discord will we have
 	
 backend:
-	delete github PAT tokens after expiration date
+	Delete github PAT tokens after expiration date
+	Receive get/post requests from front end to relay/input information from and to the database
 
 Discord Bot:
 	Timeline management
