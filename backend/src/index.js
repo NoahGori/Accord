@@ -36,7 +36,9 @@ app.get('/accounts', (req, res) => {
 	}
 });
 
-app.post('/accounts',(req,res) =>{
+// POST accounts
+
+app.post('/accounts',(req,res) =>{ // receives axios post requests to input account data into the db
 	if(req.body.discord_id != undefined &&
 		req.body.github_username != undefined &&
 		req.body.discord_username != undefined &&

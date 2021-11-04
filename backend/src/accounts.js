@@ -43,13 +43,30 @@ const getUserViaDiscordId = (discord_id) => {
 
 
 const createNewAccount = (discord_id, github_username, discord_username, discord_email) =>{
+	console.log("test");
 	if (isAlphanumerical(discord_id) && isAlphanumerical(github_username) && isAlphanumerical(discord_username) && isAlphanumerical(discord_email)) {
-		//Temporarily places discord id from next query here for later use
-		pool.query(` 
-		INSERT INTO github_info(github_username) VALUES('${github_username}');`);
-		pool.query(` 
-		INSERT INTO accounts(discord_id,github_username,discord_username,discord_email)
-		VALUES('${discord_id}','${github_username}','${discord_username}','${discord_email}');`);
+		//Initially inputs github_username to have accounts input remain valid
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+			INSERT INTO github_info(github_username) VALUES('${github_username}');`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve('Added github username');
+					}
+				});
+		});
+
+		//Then inputs the account values into db
+		promise1.then(value =>{
+			console.log(value);
+			pool.query(` 
+			INSERT INTO accounts(discord_id,github_username,discord_username,discord_email)
+			VALUES('${discord_id}','${github_username}','${discord_username}','${discord_email}');`);
+		}, reason => {
+			console.error(reason)
+		});
 	
 	} else {
 		reject(`account inputs are not alphanumerical:\n\r${discord_id}, ${github_username}, ${discord_username}, ${discord_email}`);
