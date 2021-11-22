@@ -1,7 +1,7 @@
 import pool from './database.js';
 import { isAlphanumerical } from 'is-alphanumerical';
 
-const getUserViaWebsiteKey = (website_key) => {
+const getUserViaWebsiteKey = (website_key) => { //Returns user info when get request with website key is sent to server
 	return new Promise(function(resolve, reject) {
 		if (isAlphanumerical(website_key)) {
 			pool.query(`
@@ -21,7 +21,7 @@ const getUserViaWebsiteKey = (website_key) => {
 	});
 }
 
-const getUserViaDiscordId = (discord_id) => {
+const getUserViaDiscordId = (discord_id) => { //Returns user info when get request with discord id input is sent to server
 	return new Promise(function(resolve, reject) {
 		if (isAlphanumerical(discord_id)) {
 			pool.query(`
@@ -42,7 +42,7 @@ const getUserViaDiscordId = (discord_id) => {
 }
 
 
-const createNewAccount = (discord_id, github_username, discord_username, discord_email) =>{
+const createNewAccount = (discord_id, github_username, discord_username, discord_email) =>{ //Receives axios post request from index.js, connects to db and creates new useer
 	console.log("test");
 	if (isAlphanumerical(discord_id) && isAlphanumerical(github_username) && isAlphanumerical(discord_username) && isAlphanumerical(discord_email)) {
 		//Initially inputs github_username to have accounts input remain valid
