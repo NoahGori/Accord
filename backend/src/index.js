@@ -51,9 +51,8 @@ app.post('/accounts',(req,res) =>{ // receives axios post requests to input acco
 
 // GET timeline
 app.get('/timeline', (req, res) => {
-	if (req.query.guild_id != undefined && 
-		req.query.website_key != undefined){
-		timeline.getTimelineAssignmentObjectsViaGuildIdAndWebsiteKey(req.query.guild_id,req.query.website_key)
+	if (req.query.website_key != undefined){
+		timeline.getTimelineAssignmentObjectsViaWebsiteKey(req.query.website_key)
 			.then(response => {
 				res.status(200).send(response);
 			})

@@ -1,10 +1,9 @@
 //This is purely just to test axios calls, should be working in this current state
-
 import axios from 'axios';
 
 const backendURL='http://localhost:3001'
 
-const testGetAccountVia_discord_id = () => {
+const testPostAccountVia_discord_id = () => {
     console.log('casetest running');
   axios.post(`${backendURL}/accounts`, {
       discord_id: '20792254016376023225',
