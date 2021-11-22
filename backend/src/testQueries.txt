@@ -1,0 +1,13 @@
+//Test queries to submit new info to db
+
+//Query to insert member into accounts
+
+INSERT INTO github_info(github_username) VALUES('johndoe1');
+INSERT INTO accounts(discord_id,github_username,discord_username,discord_email) VALUES('207922540163760110','johndoe1','johndoe1#9068','johndoe1@gmail.com');
+
+
+//Query to insert new timeline into timeline, timeline_assignment_objects, and timeline_permission
+INSERT INTO timeline(id,guild_id,premium_version) VALUES('2','898251356920500264', );
+INSERT INTO timeline_assignment_objects(timeline_id,discord_id,start_date,end_date,assignment_title,assignment_description,status) VALUES('2','207922540163760130','2022-10-22 14:22:09','2022-10-30 14:22:09','Assignment1','Assignment 1s description','active');
+INSERT INTO timeline(discord_id,timeline_id,owner,editor_worker) VALUES('207922540163760130','2',false,false,true);
+
