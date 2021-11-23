@@ -15,7 +15,7 @@ const BootstrapNavbar = () => {
 	return (
 		<Navbar id='Navbar' collapseOnSelect expand='sm' bg='dark' variant='dark'>
 			<Container>
-				<Navbar.Brand href='#home'>Accord</Navbar.Brand>
+				<Navbar.Brand href='/'>Accord</Navbar.Brand>
 				<Navbar.Toggle aria-controls='responsive-navbar-nav' />
 				<Navbar.Collapse id='responsive-navbar-nav'>
 					<Nav className='me-auto'>

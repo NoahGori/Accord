@@ -24,19 +24,13 @@ const Timeline = () => {
 
 	useEffect(() => {
 		if (isLoading) {
-			axios.get(`${backendURL}/accounts?website_key=${website_key}`)
+      console.log(`${backendURL}/timeline?website_key=${website_key}`)
+			axios.get(`${backendURL}/timeline?website_key=${website_key}`)
 				.then((result, error) => {
 					if (error) {
 						console.error(error);
 					} else {
-						const user = result.data[0];
-
-						axios.get(`${backendURL}/timeline?guild_id=${guild_id}`)
-							.then((result, error) => {
-								const timeline = result.data[0];
-
-								console.log(user, timeline);
-							});
+            console.log(result);
 					}
 				})
 		}
