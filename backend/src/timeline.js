@@ -1,5 +1,6 @@
 import pool from './database.js';
 import { isAlphanumerical } from 'is-alphanumerical';
+import { query } from 'express';
 
 
 // GETTERS
@@ -72,7 +73,39 @@ const getTimelineAssignmentObjectsViaWebsiteKey = (website_key) => {// Returns t
 								if (error) {
 									reject(error);
 								} else {
-									resolve(results2.rows)
+									var queryLength = results2.rows.length;
+									var timelineIdArr = [];
+									for(var i = 0; i < queryLength; i++){ //Adds all timeline_id's where this discord user is an owner/editor into an array
+										if((results2.rows[i].owner == true || results2.rows[i].editor == true) && timelineIdArr.indexOf(results2.rows[i].timeline_id) === -1){
+											timelineIdArr.push(results2.rows[i].timeline_id);
+										}
+									}
+									if(timelineIdArr.length >= 1){ //Iterates through timelineIdArr and resolves an array of all timeline_assignment_objects where discord_id is involved and has permission to view
+										var resultsArr = []
+										for(var i = 0; i < timelineIdArr.length; i++){
+											pool.query(` 
+											SELECT DISTINCT timeline_assignment_objects.timeline_id, timeline_assignment_objects.discord_id,timeline_assignment_objects.start_date,timeline_assignment_objects.end_date,
+											timeline_assignment_objects.assignment_title,timeline_assignment_objects.assignment_description,timeline_assignment_objects.status,
+											timeline_permission.owner,timeline_permission.editor,timeline_permission.worker
+											FROM timeline_assignment_objects
+											INNER JOIN timeline_permission 
+											ON timeline_permission.discord_id=timeline_assignment_objects.discord_id AND timeline_permission.timeline_id=timeline_assignment_objects.timeline_id
+											WHERE timeline_assignment_objects.timeline_id='${timelineIdArr[i]}';
+											`, (error, results3) => {
+													if (error) {
+														reject(error);
+													} else {
+														resultsArr.push(results3.rows)
+														if(resultsArr.length >= timelineIdArr.length){
+															resolve(resultsArr)
+														}
+													}
+												});
+										}
+									}
+									else{
+										resolve(results2.rows);
+									}
 								}
 							});
 					}
