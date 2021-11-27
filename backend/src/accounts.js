@@ -43,7 +43,6 @@ const getUserViaDiscordId = (discord_id) => { //Returns user info when get reque
 
 
 const createNewAccount = (discord_id, github_username, discord_username, discord_email) =>{ //Receives axios post request from index.js, connects to db and creates new useer
-	console.log("test");
 	if (isAlphanumerical(discord_id) && isAlphanumerical(github_username) && isAlphanumerical(discord_username) && isAlphanumerical(discord_email)) {
 		//Initially inputs github_username to have accounts input remain valid
 		var promise1 = new Promise(function(resolve, reject) {
