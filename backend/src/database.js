@@ -10,6 +10,4 @@ const pool = new pg.Pool({
 	port: process.env.DB_PORT
 });
 
-console.log(process.env.DB_PASS);
-
 export default pool;
