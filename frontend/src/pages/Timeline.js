@@ -51,13 +51,22 @@ const TimelineObject = (obj, canEdit) => {
               {(() => {
                 if (canEdit) {
                   return (
-                    <img 
-                      src={trash_icon} 
-                      height='20px' 
-                      className='TrashIcon'
-                      onClick={(e) => {
-                        console.log(e.target);
-                      }}/>
+                    <>
+                      <img
+                        src={box_arrow_in_up_right}
+                        height='20px'
+                        className='EditIcon'
+                        onClick={(e) => {
+                          console.log(e.target);
+                        }}/>
+                      <img 
+                        src={trash_icon} 
+                        height='20px' 
+                        className='TrashIcon'
+                        onClick={(e) => {
+                          console.log(e.target);
+                        }}/>
+                    </>
                   );
                 }
 
@@ -122,6 +131,13 @@ const TimelineObject = (obj, canEdit) => {
         </Row>
         <Row>
           <Col>
+            <p className='TimelineObjectText' style={{position: 'relative', margin: '10px'}}>
+              {DDMMTIME(start_date)} - {DDMMTIME(end_date)} 
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <div className='TimelineObjectDetailedDescription'>
               <p className='TimelineObjectText' style={{marginLeft: '10px'}}>
                 {obj.assignment_description}
@@ -147,7 +163,6 @@ const Timeline = () => {
   }
 
   const website_key = GetWebsiteKey();
-  const guild_id = GetGuildID();
 
   useEffect(() => {
     if (isLoading) {

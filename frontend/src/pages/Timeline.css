@@ -45,7 +45,6 @@
 }
 
 .TrashIcon {
-  margin-left: 30px;
   z-index: 0;
   cursor: pointer;
   transition: 0.3s;
@@ -57,13 +56,13 @@
 }
 
 .EditIcon {
-  margin-right: -10px;
+  margin: 0px 15px 0px 15px;
   z-index: 0;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .EditIcon:hover {
-  filter: invert(39%) sepia(37%) saturate(377%) hue-rotate(159deg) brightness(87%) contrast(91%);
+  filter: invert(63%) sepia(100%) saturate(774%) hue-rotate(66deg) brightness(90%) contrast(88%);
   transition: 0.3s;
 }
