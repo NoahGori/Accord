@@ -121,11 +121,133 @@ const getTimelineAssignmentObjectsViaWebsiteKey = (website_key) => {// Returns t
 
 // SETTERS
 
+const createNewTimeline = (id, guild_id, premium_version) =>{ //Receives axios post request from index.js, connects to db and creates new timeline
+	if (isAlphanumerical(id) && isAlphanumerical(guild_id) && isAlphanumerical(premium_version)) {
+		//Inputs id, guild_id, premium version state into a query to insert to the timeline table
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+				INSERT INTO timeline(id,guild_id,premium_version) VALUES('${id}','${guild_id}', ${premium_version});`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve('Added timeline');
+					}
+				});
+		});
+	}
+}
 
+const createNewTimelineAssignmentObject = (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status) =>{ //Receives axios post request from index.js, connects to db and creates new timeline_assignment_object
+	if (isAlphanumerical(timeline_id) && isAlphanumerical(discord_id) && isAlphanumerical(assignment_title) && isAlphanumerical(assignment_description)) {
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+				INSERT INTO timeline_assignment_objects(timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status) VALUES('${timeline_id}','${discord_id}', '${start_date}', '${end_date}', '${assignment_title}', '${assignment_description}', '${status}');`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve('Added timeline assignment object');
+					}
+				});
+		});
+	}
+}
+
+const createNewTimelinePermission = (discord_id, timeline_id, owner, editor, worker) =>{ //Receives axios post request from index.js, connects to db and creates new timeline_permission
+	if (isAlphanumerical(discord_id) && isAlphanumerical(timeline_id)) {
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+			INSERT INTO timeline_permission(discord_id,timeline_id,owner,editor,worker) VALUES('${discord_id}','${timeline_id}',${owner},${editor},${worker});`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve('Added timeline permission');
+					}
+				});
+		});
+	}
+}
+
+// DELETES
+
+const deleteTimeline = (timeline_id) =>{  //Receives axios post request from index.js, connects to db and deletes timeline from timeline, timeline_assignment_object, and timeline_permission
+	if (isAlphanumerical(timeline_id)) {
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+			DELETE FROM timeline_assignment_objects WHERE timeline_id = '${timeline_id}';`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						console.log(`Deleted timeline '${timeline_id}' from timeline_assignment_objects`);
+						pool.query(` 
+						DELETE FROM timeline_permission WHERE timeline_id = '${timeline_id}';`
+						, (error) => {
+							if (error) {
+								reject(error);
+							} else {
+								console.log(`Deleted timeline '${timeline_id}' from timeline_permission`);
+								pool.query(` 
+								DELETE FROM timeline WHERE id = '${timeline_id}';`
+								, (error) => {
+									if (error) {
+										reject(error);
+									} else {
+										resolve(`Deleted timeline '${timeline_id}' from timeline`);
+									}
+								});
+							}
+						});
+					}
+				});
+		});
+	}
+}
+
+const deleteTimelineAssignmentObject = (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status) =>{ //Receives axios post request from index.js, connects to db and deletes timeline assignment object
+	if (isAlphanumerical(timeline_id) && isAlphanumerical(discord_id) && isAlphanumerical(assignment_title) && isAlphanumerical(assignment_description)) {
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+			DELETE FROM timeline_assignment_objects WHERE timeline_id = '${timeline_id}' AND discord_id = '${discord_id}' AND start_date = '${start_date}' 
+			AND end_date = '${end_date}' AND assignment_title = '${assignment_title}' AND assignment_description = '${assignment_description}' AND status = '${status}';`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve(`Deleted timeline '${timeline_id}' from timeline_assignment_objects`);
+					}
+				});
+		});
+	}
+}
+
+const deleteTimelinePermission = (timeline_id,discord_id) =>{ // Receives axios post request from index.js, connects to db and deletes timeline_permission
+	if (isAlphanumerical(timeline_id) && isAlphanumerical(discord_id)) {
+		var promise1 = new Promise(function(resolve, reject) {
+			pool.query(` 
+			DELETE FROM timeline_permission WHERE timeline_id = '${timeline_id}' AND discord_id = '${discord_id}';`
+			, (error) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve(`Deleted timeline '${timeline_id}' with discord_id '${discord_id}' from timeline_permission`);
+					}
+				});
+		});
+	}
+}
 
 // EXPORTS
 export default {
 	getTimelineViaGuildId,
 	getTimelineAssignmentObjectsViaTimelineIdAndDiscordId,
-	getTimelineAssignmentObjectsViaWebsiteKey
+	getTimelineAssignmentObjectsViaWebsiteKey,
+	createNewTimeline,
+	createNewTimelineAssignmentObject,
+	createNewTimelinePermission,
+	deleteTimeline,
+	deleteTimelineAssignmentObject,
+	deleteTimelinePermission
 }
