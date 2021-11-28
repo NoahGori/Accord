@@ -7,7 +7,17 @@ INSERT INTO accounts(discord_id,github_username,discord_username,discord_email) 
 
 
 //Query to insert new timeline into timeline, timeline_assignment_objects, and timeline_permission
-INSERT INTO timeline(id,guild_id,premium_version) VALUES('2','898251356920500264', );
-INSERT INTO timeline_assignment_objects(timeline_id,discord_id,start_date,end_date,assignment_title,assignment_description,status) VALUES('2','207922540163760130','2022-10-22 14:22:09','2022-10-30 14:22:09','Assignment1','Assignment 1s description','active');
-INSERT INTO timeline(discord_id,timeline_id,owner,editor_worker) VALUES('207922540163760130','2',false,false,true);
+INSERT INTO timeline(id,guild_id,premium_version) VALUES('3','89825135692050333', true);
+INSERT INTO timeline_assignment_objects(timeline_id,discord_id,start_date,end_date,assignment_title,assignment_description,status) VALUES('3','207922540163760130','2022-10-22 14:22:09','2022-10-30 14:22:09','Assignment3','Assignment 3s description','active');
+INSERT INTO timeline_permission(discord_id,timeline_id,owner,editor,worker) VALUES('207922540163760130','1',false,true,false);
 
+//Query into timeline_assignment_objects to receive all instances found with an input discord id, joined with timeline_permission
+SELECT DISTINCT timeline_assignment_objects.timeline_id, timeline_assignment_objects.discord_id,timeline_assignment_objects.start_date,timeline_assignment_objects.end_date,
+						timeline_assignment_objects.assignment_title,timeline_assignment_objects.assignment_description,timeline_assignment_objects.status,
+						timeline_permission.owner,timeline_permission.editor,timeline_permission.worker
+						FROM timeline_assignment_objects
+						INNER JOIN timeline_permission 
+						ON timeline_permission.discord_id=timeline_assignment_objects.discord_id AND timeline_permission.timeline_id=timeline_assignment_objects.timeline_id
+						WHERE timeline_assignment_objects.discord_id='207922540163760130';
+
+                    
