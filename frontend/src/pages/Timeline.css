@@ -1,0 +1,69 @@
+#TimelinePage {
+	position: fixed;
+  overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	width: 100%;
+  height: 95%;
+	top: 7em;
+	background: #f0f0f0;
+  transition: 0.3s;
+}
+
+.TimelineObjectPreviewBox {
+  display: block;
+  background: #FFFFFF;
+  border-radius: 15px;
+  margin: 10px;
+  box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: -10;
+}
+
+.TimelineObjectText {
+  color: #212529;
+  transition: 0.3s;
+}
+
+
+.TimelineObjectDetailedBox {
+  display: None;
+  background: #FFFFFF;
+  border-radius: 15px;
+  margin: 10px;
+  box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: -10;
+}
+
+.TimelineObjectDetailedDescription {
+  background: rgba(184,204,216,0.5);
+  margin: 10px;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.TrashIcon {
+  margin-left: 30px;
+  z-index: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.TrashIcon:hover {
+  filter: invert(27%) sepia(36%) saturate(6389%) hue-rotate(1deg) brightness(103%) contrast(108%);
+  transition: 0.3s;
+}
+
+.EditIcon {
+  margin-right: -10px;
+  z-index: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.EditIcon:hover {
+  filter: invert(39%) sepia(37%) saturate(377%) hue-rotate(159deg) brightness(87%) contrast(91%);
+  transition: 0.3s;
+}
