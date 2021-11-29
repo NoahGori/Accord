@@ -62,8 +62,7 @@ app.get('/timeline', (req, res) => {
 			});
 	} else if (
 		req.query.discord_id != undefined && 
-		req.query.timeline_id != undefined && 
-		req.query.timeline_assignment_objects != undefined) {
+		req.query.timeline_id != undefined) {
 		timeline.getTimelineAssignmentObjectsViaTimelineIdAndDiscordId(req.query.timeline_id, req.query.discord_id)
 			.then(response => {
 				res.status(200).send(response);
