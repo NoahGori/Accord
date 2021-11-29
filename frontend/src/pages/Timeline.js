@@ -103,7 +103,7 @@ const TimelineObject = (obj, canEdit) => {
             } else {
               db = dom;
               while(!(dom.className.includes('TimelineObjectPreviewBox'))) {
-                dom = dom.nextSibling;
+                dom = dom.previousSibling;
               }
 
               pb = dom;
