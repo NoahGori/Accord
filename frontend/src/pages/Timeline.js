@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Container,
   Row,
-  Col
+  Col,
+  Form,
+  Button
 } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -25,49 +27,122 @@ const TimelineObject = (obj, canEdit) => {
     return `${date.toDateString()}`
   }
 
+  const StatusDropdown = () => {
+    return (
+      <>
+      </>
+    );
+  }
+
+  const UpdateTimelineObject = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    let start_date=data.get('start_date').split('-');
+    start_date= new Date(Date(start_date[2], start_date[1]-1, start_date[0])).toISOString().replace('T',' ').replace('Z','');
+    let end_date=data.get('end_date').split('-');
+    end_date= new Date(Date(end_date[2], end_date[1]-1, end_date[0])).toISOString().replace('T',' ').replace('Z','');
+    let updateJSON={
+      title: data.get('title'),
+      description: data.get('description'),
+      start_date: start_date,
+      end_date: end_date,
+      status: data.get('status'),
+    }
+    console.log(updateJSON, obj);
+  };
+
+  const EditAndDeleteIcons = () => {
+    return (
+      <>
+        <img
+          src={box_arrow_in_up_right}
+          height='20px'
+          className='EditIcon'
+          onClick={(e) => {
+            let dom = e.target;
+
+            while (!(dom.className.includes('TimelineObjectPreviewBox') || dom.className.includes('TimelineObjectDetailedBox'))) {
+              dom = dom.parentElement;
+            }
+
+            let pb = undefined;
+            let db = undefined;
+            let eb = undefined;
+            if (dom.className.includes('TimelineObjectPreviewBox')) {
+              pb = dom;
+              while (!(dom.className.includes('TimelineObjectDetailedBox'))) {
+                dom = dom.nextSibling;
+              }
+
+              db = dom;
+            } else {
+              db = dom;
+              while(!(dom.className.includes('TimelineObjectPreviewBox'))) {
+                dom = dom.nextSibling;
+              }
+
+              pb = dom;
+            }
+
+            while (!(dom.className.includes('TimelineObjectEditForm'))) {
+              dom = dom.nextSibling;
+            }
+
+            eb = dom;
+
+            pb.style.display = 'None';
+            db.style.display = 'None';
+            eb.style.display = 'Block';
+          }}/>
+        <img 
+          src={trash_icon} 
+          height='20px' 
+          className='TrashIcon'
+          onClick={(e) => {
+          }}/>
+      </>
+    );
+  }
+
+  function Expand(e) {
+    let dom = e.target;
+    while (!dom.className.includes('TimelineObjectPreviewBox')) {
+      dom = dom.parentElement;
+    }
+
+    dom.style.display = 'none';
+    dom.nextSibling.style.display = 'block';
+  }
+
+  function Collapse(e) {
+    let dom = e.target;
+    while (!(dom.className.includes('TimelineObjectDetailedBox') || dom.className.includes('TimelineObjectEditForm'))) {
+      dom = dom.parentElement;
+    }
+
+    dom.style.display = 'none';
+    dom.previousSibling.style.display = 'block';
+  }
+
   return (
     <>
-      <Container className='TimelineObjectPreviewBox' onClick={(e) => {
-        let dom = e.target;
-        while (!dom.className.includes('TimelineObjectPreviewBox')) {
-          dom = dom.parentElement;
-        }
-
-        dom.style.display = 'none';
-        dom.nextSibling.style.display = 'block';
-      }}>
+      <Container className='TimelineObjectBox TimelineObjectPreviewBox'>
         <Row>
-          <Col className='align-self-start' xs={1}>
+          <Col className='align-self-start' xs={1} onClick={Expand} style={{cursor: 'pointer'}}>
             <img src={arrow_down_icon} height='15px' style={{position: 'relative', top: '5px'}}/>
           </Col>
-          <Col>
+          <Col onClick={Expand} style={{cursor: 'pointer'}}>
             <p className='TimelineObjectText' style={{position: 'relative', top: '6px'}}>
               {obj.assignment_title}
             </p>
           </Col>
           <Col className='align-self-end d-flex flex-row-reverse'>
             <p className='TimelineObjectText' style={{position: 'relative', top: '6px'}}>
-              Completion date: {DDMMTIME(end_date)} 
+              {obj.status}
               {(() => {
                 if (canEdit) {
-                  return (
-                    <>
-                      <img
-                        src={box_arrow_in_up_right}
-                        height='20px'
-                        className='EditIcon'
-                        onClick={(e) => {
-                          console.log(e.target);
-                        }}/>
-                      <img 
-                        src={trash_icon} 
-                        height='20px' 
-                        className='TrashIcon'
-                        onClick={(e) => {
-                          console.log(e.target);
-                        }}/>
-                    </>
-                  );
+                  return EditAndDeleteIcons();
                 }
 
                 return (
@@ -79,21 +154,13 @@ const TimelineObject = (obj, canEdit) => {
           </Col>
         </Row>
       </Container>
-      <Container className='TimelineObjectDetailedBox' onClick={(e) => {
-        let dom = e.target;
-        while (!dom.className.includes('TimelineObjectDetailedBox')) {
-          dom = dom.parentElement;
-        }
-
-        dom.style.display = 'none';
-        dom.previousSibling.style.display = 'block';
-      }}>
+      <Container className='TimelineObjectBox TimelineObjectDetailedBox'>
         <Row>
-          <Col className='align-self-start' xs={1}>
+          <Col className='align-self-start' xs={1} onClick={Collapse} style={{cursor: 'pointer'}}>
             <img src={arrow_up_icon} height='15px' style={{position: 'relative', top: '5px'}}/>
           </Col>
           <Col>
-            <p className='TimelineObjectText' style={{position: 'relative', top: '6px'}}>
+            <p className='TimelineObjectText' onClick={Collapse} style={{cursor: 'pointer', position: 'relative', top: '6px'}}>
               {obj.assignment_title}
             </p>
           </Col>
@@ -101,24 +168,7 @@ const TimelineObject = (obj, canEdit) => {
             <p className='TimelineObjectText' style={{position: 'relative', top: '6px'}}>
               {(() => {
                 if (canEdit) {
-                  return (
-                    <>
-                      <img
-                        src={box_arrow_in_up_right}
-                        height='20px'
-                        className='EditIcon'
-                        onClick={(e) => {
-                          console.log(e.target);
-                        }}/>
-                      <img 
-                        src={trash_icon} 
-                        height='20px' 
-                        className='TrashIcon'
-                        onClick={(e) => {
-                          console.log(e.target);
-                        }}/>
-                    </>
-                  );
+                  return EditAndDeleteIcons();
                 }
 
                 return (
@@ -146,6 +196,74 @@ const TimelineObject = (obj, canEdit) => {
           </Col>
         </Row>
       </Container>
+      {(() => {
+        if (canEdit) {
+          return (
+            <>
+              <Container className='TimelineObjectBox TimelineObjectEditForm'>       
+                <Row>
+                  <Col className='align-self-start' xs={1} onClick={Collapse} style={{cursor: 'pointer', marginBottom: '15px'}}>
+                    <img src={arrow_up_icon} height='15px' style={{position: 'relative', top: '5px'}}/>
+                  </Col>          
+                </Row>
+                <Row>
+                  <Form onSubmit={UpdateTimelineObject}>
+                    <Row>
+                      <Form.Group className='mb-3' controlId='title'>
+                        <Form.Label className='TimelineObjectText'>Title</Form.Label>
+                        <Form.Control name='title' type='text' placeholder='title' defaultValue={obj.assignment_title}/>
+                      </Form.Group>
+                    </Row>
+
+                    <Row>
+                      <Form.Group className='mb-3' controlId='description'>
+                        <Form.Label className='TimelineObjectText'>Description</Form.Label>
+                        <Form.Control
+                          style={{height: '200px'}}
+                          name='description'
+                          as='textarea'
+                          type='textarea'
+                          placeholder='description'
+                          defaultValue={obj.assignment_description}/>
+                      </Form.Group>
+                    </Row>
+
+                    <Row>
+                      <Col xs={2}>
+                        <Form.Group className='InputDate' controlId='start_date'>
+                          <Form.Label className='TimelineObjectText'>Assignment start date</Form.Label>
+                          <Form.Control name='start_date' type='date' defaultValue={obj.start_date}/>
+                        </Form.Group>
+                      </Col>
+                      <Col xs={2}>
+                        <Form.Group className='InputDate' controlId='end_date'>
+                          <Form.Label className='TimelineObjectText'>Assignment end date</Form.Label>
+                          <Form.Control name='end_date' type='date'/>
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group className='InputDate' controlId='status'>
+                          <Form.Label className='TimelineObjectText'>Status</Form.Label>
+                          <Form.Control name='status' type='text'/>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Button variant="primary" type="submit" style={{marginBottom:'15px',marginTop:'15px'}}>
+                      Submit
+                    </Button>
+                  </Form>
+                </Row>
+
+              </Container>
+            </>
+          );
+        }
+
+        return (
+          <>
+          </>
+        );
+      })()}
     </>
   )
 }
@@ -172,7 +290,6 @@ const Timeline = () => {
             console.error(error);
           } else {
             let jsxArr = [];
-            console.log(result.data);
             let canEdit = false;
 
             result.data.forEach((e) => {
@@ -186,7 +303,7 @@ const Timeline = () => {
               } else if (e.editor || e.owner) {
                 canEdit = true;
               }
-                if (canEdit) return 0;
+              if (canEdit) return 0;
             });
 
             result.data.forEach((e) => {
