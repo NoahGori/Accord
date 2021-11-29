@@ -37,7 +37,7 @@ const getUserViaDiscordId = (discord_id) => { //Returns user info when get reque
 
 const createNewAccount = (discord_id, github_username, discord_username, discord_email) =>{ //Receives axios post request from index.js, connects to db and creates new useer
   //Initially inputs github_username to have accounts input remain valid
-  var promise1 = new Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     pool.query(` 
       INSERT INTO github_info(github_username) 
       VALUES($1);`, 

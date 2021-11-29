@@ -82,47 +82,83 @@ app.get('/timeline', (req, res) => {
   }
 });
 
-//POST timeline
-
+//POST and DELETE timeline. Workaround
 
 app.post('/timeline',(req,res) =>{
-  if(req.body.id != undefined &&
-    req.body.guild_id != undefined &&
-    req.body.premium_version != undefined){
-    timeline.createNewTimeline(req.body.id,req.body.guild_id,req.body.premium_version);
-  } else if (req.body.timeline_id != undefined &&
-    req.body.discord_id != undefined &&
-    req.body.start_date != undefined &&
-    req.body.end_date != undefined &&
-    req.body.assignment_title != undefined &&
-    req.body.assignment_description != undefined &&
-    req.body.status != undefined){
-    timeline.createNewTimelineAssignmentObject(req.body.timeline_id,req.body.discord_id,req.body.start_date,req.body.end_date,req.body.assignment_title,req.body.assignment_description,req.body.status);
-  } else if (req.body.discord_id != undefined &&
-    req.body.timeline_id != undefined &&
-    req.body.owner != undefined &&
-    req.body.editor != undefined &&
-    req.body.worker != undefined){
-    timeline.createNewTimelinePermission(req.body.discord_id,req.body.timeline_id,req.body.owner,req.body.editor,req.body.worker);
-  }
-});
+  if (req.body.DELETE === undefined) {
+    if(req.body.id != undefined &&
+      req.body.guild_id != undefined &&
+      req.body.premium_version != undefined){
+      timeline.createNewTimeline(req.body.id,req.body.guild_id,req.body.premium_version)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
 
-//DELETE timeline
 
-app.delete('/timeline',(req,res) =>{
-  if(req.body.discord_id != undefined &&
-    req.body.timeline_id != undefined &&
-    req.body.start_date != undefined &&
-    req.body.end_date != undefined &&
-    req.body.assignment_title != undefined &&
-    req.body.assignment_description != undefined &&
-    req.body.status != undefined){ //All columns are needed to delete a specific assignment object
-    timeline.deleteTimelineAssignmentObject(req.body.timeline_id,req.body.discord_id,req.body.start_date,req.body.end_date,req.body.assignment_title,req.body.assignment_description,req.body.status);
-  } else if(req.body.discord_id != undefined &&
-    req.body.timeline_id != undefined){
-    timeline.deleteTimelinePermission(req.body.timeline_id,req.body.discord_id);
-  } else if(req.body.timeline_id != undefined){
-    timeline.deleteTimeline(req.body.timeline_id);
+    } else if (req.body.timeline_id != undefined &&
+      req.body.discord_id != undefined &&
+      req.body.start_date != undefined &&
+      req.body.end_date != undefined &&
+      req.body.assignment_title != undefined &&
+      req.body.assignment_description != undefined &&
+      req.body.status != undefined){
+      timeline.createNewTimelineAssignmentObject(req.body.timeline_id,req.body.discord_id,req.body.start_date,req.body.end_date,req.body.assignment_title,req.body.assignment_description,req.body.status)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
+
+    } else if (req.body.discord_id != undefined &&
+      req.body.timeline_id != undefined &&
+      req.body.owner != undefined &&
+      req.body.editor != undefined &&
+      req.body.worker != undefined){
+      timeline.createNewTimelinePermission(req.body.discord_id,req.body.timeline_id,req.body.owner,req.body.editor,req.body.worker)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
+    }
+  } else {
+    if (req.body.timeline_id != undefined &&
+      req.body.discord_id != undefined &&
+      req.body.start_date != undefined &&
+      req.body.end_date != undefined &&
+      req.body.assignment_title != undefined &&
+      req.body.assignment_description != undefined &&
+      req.body.status != undefined) {
+      timeline.deleteTimelineAssignmentObject(req.body.timeline_id,req.body.discord_id,req.body.start_date,req.body.end_date,req.body.assignment_title,req.body.assignment_description,req.body.status)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
+    } else if (req.body.timeline_id != undefined &&
+      req.body.discord_id != undefined) {
+      timeline.deleteTimelinePermission(req.body.timeline_id, req.body.discord_id)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
+    } else if (req.body.timeline_id != undefined) {
+      timeline.deleteTimeline(req.body.timeline_id)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
+    }
   }
 });
 
@@ -141,18 +177,24 @@ app.put('/timeline',(req,res) => {
     req.body.new_assignment_title != undefined &&
     req.body.new_assignment_description != undefined &&
     req.body.new_status != undefined) {
-    updateTimelineAssignmentObject(timeline_id,
-      discord_id,
-      old_start_date,
-      old_end_date,
-      old_assignment_title,
-      old_assignment_description,
-      old_status,
-      new_start_date,
-      new_end_date,
-      new_assignment_title,
-      new_assignment_description,
-      new_status); 
+    timeline.updateTimelineAssignmentObject(req.body.timeline_id,
+      req.body.discord_id,
+      req.body.old_start_date,
+      req.body.old_end_date,
+      req.body.old_assignment_title,
+      req.body.old_assignment_description,
+      req.body.old_status,
+      req.body.new_start_date,
+      req.body.new_end_date,
+      req.body.new_assignment_title,
+      req.body.new_assignment_description,
+      req.body.new_status)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
   }
 });
 
