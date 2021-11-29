@@ -22,6 +22,8 @@ import trash_icon from 'src/assets/trash.svg';
 const TimelineObject = (obj, canEdit) => {
   let start_date = new Date(obj.start_date);
   let end_date = new Date(obj.end_date);
+  let simplified_start_date=start_date.toISOString().substr(0,start_date.toISOString().match('[a-zA-Z]').index);
+  let simplified_end_date=end_date.toISOString().substr(0,end_date.toISOString().match('[a-zA-Z]').index);
 
   const DDMMTIME = (date) => {
     return `${date.toDateString()}`
@@ -49,7 +51,29 @@ const TimelineObject = (obj, canEdit) => {
       end_date: end_date,
       status: data.get('status'),
     }
-    console.log(updateJSON, obj);
+   
+    axios.put(`${backendURL}/timeline`, {
+      timeline_id: obj.timeline_id,
+      discord_id: obj.discord_id,
+      old_start_date: obj.start_date,
+      old_end_date: obj.end_date,
+      old_assignment_title: obj.assignment_title,
+      old_assignment_description: obj.assignment_description,
+      old_status: obj.status,
+      new_start_date: updateJSON.start_date,
+      new_end_date: updateJSON.end_date,
+      new_assignment_title: updateJSON.title,
+      new_assignment_description: updateJSON.description,
+      new_status: updateJSON.status
+    }) 
+      .then((result,error)=> {
+        if (error) {
+          console.error(error);
+        }
+        console.log('reload');
+        window.location.reload();
+      }
+      );
   };
 
   const EditAndDeleteIcons = () => {
@@ -100,6 +124,23 @@ const TimelineObject = (obj, canEdit) => {
           height='20px' 
           className='TrashIcon'
           onClick={(e) => {
+            axios.post(`${backendURL}/timeline`, {
+              DELETE: true,
+              timeline_id: obj.timeline_id,
+              discord_id: obj.discord_id,
+              start_date: obj.start_date,
+              end_date: obj.end_date,
+              assignment_title: obj.assignment_title,
+              assignment_description: obj.assignment_description,
+              status: obj.status
+            })
+              .then((result, error) => {
+                if (error) {
+                  console.error(error);
+                } else {
+                  window.location.reload();
+                }
+              });
           }}/>
       </>
     );
@@ -232,19 +273,19 @@ const TimelineObject = (obj, canEdit) => {
                       <Col xs={2}>
                         <Form.Group className='InputDate' controlId='start_date'>
                           <Form.Label className='TimelineObjectText'>Assignment start date</Form.Label>
-                          <Form.Control name='start_date' type='date' defaultValue={obj.start_date}/>
+                          <Form.Control name='start_date' type='date' defaultValue={simplified_start_date}/>
                         </Form.Group>
                       </Col>
                       <Col xs={2}>
                         <Form.Group className='InputDate' controlId='end_date'>
                           <Form.Label className='TimelineObjectText'>Assignment end date</Form.Label>
-                          <Form.Control name='end_date' type='date'/>
+                          <Form.Control name='end_date' type='date' defaultValue={simplified_end_date}/>
                         </Form.Group>
                       </Col>
                       <Col>
                         <Form.Group className='InputDate' controlId='status'>
                           <Form.Label className='TimelineObjectText'>Status</Form.Label>
-                          <Form.Control name='status' type='text'/>
+                          <Form.Control name='status' type='text' defaultValue={obj.status}/>
                         </Form.Group>
                       </Col>
                     </Row>
