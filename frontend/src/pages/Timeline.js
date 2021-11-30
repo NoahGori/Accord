@@ -344,11 +344,11 @@ const Timeline = () => {
         window.location.reload();
       }).catch((error) => {
         console.error(error);
-      alert(`Please make sure that the user with the corresponding discord_id (${insertJSON.discord_id}) has made an account with us!`);
+        alert(`Please make sure that the user with the corresponding discord_id (${insertJSON.discord_id}) has made an account with us! Look up the discord_id info with this website: https://discord.id/`);
       });
     } catch(error) {
       console.error(error);
-      alert(`Please make sure that the user with the corresponding discord_id (${insertJSON.discord_id}) has made an account with us!`);
+      alert(`Please make sure that the user with the corresponding discord_id (${insertJSON.discord_id}) has made an account with us! Look up the discord_id info with this website: https://discord.id/`);
     }
   }
 
