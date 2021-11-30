@@ -336,7 +336,6 @@ const Timeline = () => {
       discord_id: data.get('discord_id')
     }
 
-
     try {
       axios.post(`${backendURL}/timeline`, insertJSON).then((res) => {
         console.error(res);

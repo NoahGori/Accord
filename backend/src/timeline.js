@@ -180,7 +180,7 @@ const createNewTimelineAssignmentObject = (timeline_id, discord_id, start_date, 
           $5,
           $6,
           $7);`, 
-      [timeline_id, discord_id, start_date, end_date, assignment_title, assignment_title, status],
+      [timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status],
       (error) => {
         if (error) {
           reject(error);
