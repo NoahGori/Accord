@@ -149,12 +149,12 @@ const createNewTimeline = (id, guild_id, premium_version) =>{ //Receives axios p
 const createNewTimelineAssignmentObject = (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status) =>{ //Receives axios post request from index.js, connects to db and creates new timeline_assignment_object
   return new Promise(function(resolve, reject) {
     pool.query(` 
-        INSERT INTO timeline_assignment_objects (timeline_id
-          discord_id
-          start_date
-          end_date
-          assignment_title
-          assignment_description
+        INSERT INTO timeline_assignment_objects (timeline_id,
+          discord_id,
+          start_date,
+          end_date,
+          assignment_title,
+          assignment_description,
           status) 
         VALUES ($1,
           $2,

@@ -95,7 +95,7 @@ app.get('/timeline', (req, res) => {
 //POST and DELETE timeline. Workaround
 
 app.post('/timeline',(req,res) =>{
-  if (req.body.DELETE === undefined) {
+  if (req.body.DELETE === undefined) { //POST
     if(req.body.id != undefined &&
       req.body.guild_id != undefined &&
       req.body.premium_version != undefined){
@@ -106,8 +106,6 @@ app.post('/timeline',(req,res) =>{
       .catch(error => {
         res.status(500).send(error);
       });
-
-
     } else if (req.body.timeline_id != undefined &&
       req.body.discord_id != undefined &&
       req.body.start_date != undefined &&
@@ -136,7 +134,7 @@ app.post('/timeline',(req,res) =>{
         res.status(500).send(error);
       });
     }
-  } else {
+  } else { //DELETE
     if (req.body.timeline_id != undefined &&
       req.body.discord_id != undefined &&
       req.body.start_date != undefined &&
