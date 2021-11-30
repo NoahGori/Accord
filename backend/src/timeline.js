@@ -121,7 +121,7 @@ const getAllTimelineObjectsWithTimelineId = (timeline_id) => {
         if (error) {
           reject(error);
         } else { 
-          resolve(results);
+          resolve(results.rows);
         }
       });
   });
