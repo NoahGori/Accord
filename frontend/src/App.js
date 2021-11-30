@@ -7,6 +7,7 @@ import {
 
 import LandingPage from 'src/pages/LandingPage.js';
 import Timeline from 'src/pages/Timeline.js';
+import ViewTimeline from 'src/pages/ViewTimeline.js';
 
 function App() {
 	return (
@@ -20,7 +21,8 @@ function App() {
 			<BrowserRouter>
 				<Switch>
 					<Route exact path='/' component={LandingPage} />
-					<Route exact path='/timeline' component={Timeline} />
+					<Route path='/Timeline' component={Timeline} />
+          <Route path='/ViewTimeline' component={ViewTimeline} />
 				</Switch>
 			</BrowserRouter>
 		</div>
