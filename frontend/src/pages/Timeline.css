@@ -1,0 +1,95 @@
+#TimelinePage {
+  overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+  padding-top: 7em;
+	width: 100%;
+  height: auto;
+	top: 7em;
+	background: #f0f0f0;
+  transition: 0.3s;
+}
+
+.TimelineObjectBox {
+  background: #FFFFFF;
+  border-radius: 15px;
+  margin: 10px;
+  box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
+  transition: 0.3s;
+  z-index: -10;
+}
+
+.TimelineObjectPreviewBox {
+  display: block;
+}
+
+.TimelineObjectEditForm {
+  display: None;
+}
+
+.TimelineObjectDetailedBox {
+  display: None;
+}
+
+.AddTimelineObjectBox {
+  display: None;
+}
+
+
+.TimelineObjectText {
+  color: #212529;
+  transition: 0.3s;
+}
+
+.TimelineObjectDetailedDescription {
+  background: rgba(184,204,216,0.5);
+  margin: 10px;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+
+.TrashIcon {
+  z-index: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.TrashIcon:hover {
+  filter: invert(27%) sepia(36%) saturate(6389%) hue-rotate(1deg) brightness(103%) contrast(108%);
+  transition: 0.3s;
+}
+
+.EditIcon {
+  margin: 0px 15px 0px 15px;
+  z-index: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.EditIcon:hover {
+  filter: invert(62%) sepia(72%) saturate(530%) hue-rotate(69deg) brightness(91%) contrast(92%);
+  transition: 0.3s;
+}
+
+.PlusCircleFillIcon {
+  z-index: 0;
+  cursor: pointer;
+  width: 2em;
+  transition: 0.5s;
+}
+
+.PlusCircleFillIcon:hover {
+  filter: invert(68%) sepia(72%) saturate(346%) hue-rotate(86deg) brightness(88%) contrast(87%);
+  transition: 0.3s;
+}
+
+.check_timeline_id_button {
+  position: relative;
+  margin: 5px 5px 0px 0px;
+  font-size: 1em !important;
+}
+
+.AddTimelineObjectFormButtons {
+  margin: 15px;
+  margin-left: 0px;
+}
