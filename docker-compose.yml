@@ -6,6 +6,7 @@ services:
     env_file: ./bot/.env
     volumes:
       - ./bot/src:/app/src
+      - ./bot/tests:/app/tests
   backend:
     build:
       context: .
