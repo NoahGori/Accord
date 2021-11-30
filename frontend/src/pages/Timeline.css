@@ -30,6 +30,10 @@
   display: None;
 }
 
+.AddTimelineObjectBox {
+  display: None;
+}
+
 
 .TimelineObjectText {
   color: #212529;
@@ -41,10 +45,6 @@
   margin: 10px;
   transition: 0.3s;
   border-radius: 5px;
-}
-
-.InputDate {
-  width: 160px;
 }
 
 
@@ -69,4 +69,22 @@
 .EditIcon:hover {
   filter: invert(62%) sepia(72%) saturate(530%) hue-rotate(69deg) brightness(91%) contrast(92%);
   transition: 0.3s;
+}
+
+.PlusCircleFillIcon {
+  z-index: 0;
+  cursor: pointer;
+  width: 2em;
+  transition: 1s;
+}
+
+.PlusCircleFillIcon:hover {
+  filter: invert(68%) sepia(72%) saturate(346%) hue-rotate(86deg) brightness(88%) contrast(87%);
+  transition: 0.6s;
+}
+
+.check_timeline_id_button {
+  position: relative;
+  margin: 5px 5px 0px 0px;
+  font-size: 1em !important;
 }

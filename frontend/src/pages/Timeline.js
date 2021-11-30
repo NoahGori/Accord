@@ -18,6 +18,7 @@ import arrow_down_icon from 'src/assets/arrow-down.svg';
 import arrow_up_icon from 'src/assets/arrow-up.svg';
 import box_arrow_in_up_right from 'src/assets/box-arrow-in-up-right.svg';
 import trash_icon from 'src/assets/trash.svg';
+import plus_circle_fill_icon from 'src/assets/plus-circle-fill.svg';
 
 const TimelineObject = (obj, canEdit) => {
   let start_date = new Date(obj.start_date);
@@ -51,7 +52,7 @@ const TimelineObject = (obj, canEdit) => {
       end_date: end_date,
       status: data.get('status'),
     }
-   
+
     axios.put(`${backendURL}/timeline`, {
       timeline_id: obj.timeline_id,
       discord_id: obj.discord_id,
@@ -67,10 +68,9 @@ const TimelineObject = (obj, canEdit) => {
       new_status: updateJSON.status
     }) 
       .then((result,error)=> {
-        if (error) {
+        if (error) 
           console.error(error);
-        }
-        console.log('reload');
+        else
         window.location.reload();
       }
       );
@@ -271,13 +271,13 @@ const TimelineObject = (obj, canEdit) => {
 
                     <Row>
                       <Col xs={2}>
-                        <Form.Group className='InputDate' controlId='start_date'>
+                        <Form.Group controlId='start_date'>
                           <Form.Label className='TimelineObjectText'>Assignment start date</Form.Label>
                           <Form.Control name='start_date' type='date' defaultValue={simplified_start_date}/>
                         </Form.Group>
                       </Col>
                       <Col xs={2}>
-                        <Form.Group className='InputDate' controlId='end_date'>
+                        <Form.Group controlId='end_date'>
                           <Form.Label className='TimelineObjectText'>Assignment end date</Form.Label>
                           <Form.Control name='end_date' type='date' defaultValue={simplified_end_date}/>
                         </Form.Group>
@@ -294,7 +294,6 @@ const TimelineObject = (obj, canEdit) => {
                     </Button>
                   </Form>
                 </Row>
-
               </Container>
             </>
           );
@@ -321,6 +320,32 @@ const Timeline = () => {
     return new URLSearchParams(useLocation().search).get('guild_id');
   }
 
+  const AddTimelineObject = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    let start_date=data.get('start_date').split('-');
+    start_date= new Date(Date(start_date[2], start_date[1]-1, start_date[0])).toISOString().replace('T',' ').replace('Z','');
+    let end_date=data.get('end_date').split('-');
+    end_date= new Date(Date(end_date[2], end_date[1]-1, end_date[0])).toISOString().replace('T',' ').replace('Z','');
+    let insertJSON={
+      title: data.get('title'),
+      description: data.get('description'),
+      start_date: start_date,
+      end_date: end_date,
+      status: data.get('status'),
+    }
+
+    axios.post(`${backendURL}/timeline`, {
+
+    }).then((result, error) => {
+      if (error)
+        console.error(error);
+      else
+      window.location.reload();
+    });
+  }
+
   const website_key = GetWebsiteKey();
 
   useEffect(() => {
@@ -332,33 +357,139 @@ const Timeline = () => {
           } else {
             let jsxArr = [];
             let canEdit = false;
-
+            let editable_timelines = [];
             result.data.forEach((e) => {
               if (Array.isArray(e)) {
                 e.forEach((ee) => {
-                  if (canEdit) return 0;
                   if (ee.editor || ee.owner) {
+                    jsxArr.push(TimelineObject(ee, true));
+                    editable_timelines.push(ee.timeline_id);
                     canEdit = true;
+                  } else {
+                    jsxArr.push(TimelineObject(ee, false));
                   }
                 });
               } else if (e.editor || e.owner) {
+                jsxArr.push(TimelineObject(e, true));
+                editable_timelines.push(e.timeline_id);
                 canEdit = true;
-              }
-              if (canEdit) return 0;
-            });
-
-            result.data.forEach((e) => {
-              if (Array.isArray(e)) {
-                e.forEach((ee) => {
-                  jsxArr.push(TimelineObject(ee,canEdit));
-                });
               } else {
-                jsxArr.push(TimelineObject(e, canEdit));
+                jsxArr.push(TimelineObject(e, false));
               }
             });
             set_page(
               <div id='TimelinePage'>
                 {jsxArr}
+                {(() => {
+                  if (canEdit) {
+                    return (
+                      <>
+                        <Container className='d-flex align-items-center justify-content-center'>
+                          <img
+                            src={plus_circle_fill_icon}
+                            className='PlusCircleFillIcon'
+                            onClick={(e)=> {
+                              let dom = e.target;
+                              let form = dom.parentElement.nextSibling;
+                              let img = dom;
+
+                              img.style.display='None';
+                              form.style.display='Block';
+                            }}
+                          />
+                        </Container>
+                        <Container className='TimelineObjectBox AddTimelineObjectBox' style={{paddingTop:'10px'}}>
+                          <Form onSubmit={AddTimelineObject}>
+                            <Row>
+                              <Col>
+                                <Form.Group className='mb-3' controlId='discord_id'>
+                                  <Form.Label className='TimelineObjectText'>Discord_id</Form.Label>
+                                  <Form.Control name='discord_id' type='text' placeholder='discord_id'/>
+                                  <Form.Text className="text-muted">
+                                    <a href='https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'>Tutorial on how to get discord_id</a>
+                                  </Form.Text>
+                                </Form.Group>
+                              </Col>
+                              <Col xs={3}>
+                                <Form.Group>
+                                  <Form.Label className='TimelineObjectText'>timeline_id</Form.Label>
+                                  <Form.Select>
+                                    {(() => {
+                                      let selectJsxArr = []
+                                      editable_timelines.forEach((e) => {
+                                        selectJsxArr.push(<option className='TimelineObjectText' value={e}>{e}</option>);
+                                      });
+                                      return (
+                                        <>
+                                          {selectJsxArr}
+                                        </>
+                                      );
+                                    })()}
+                                  </Form.Select>
+                                  <Form.Text>
+                                    <Button className='check_timeline_id_button' onClick={(e)=> {
+                                      let dom = e.target;
+                                      let timeline_id = dom.parentElement.previousSibling.value;
+                                    }}>
+                                    timeline information</Button>
+                                  </Form.Text>
+                                </Form.Group>
+                              </Col>
+                            </Row>
+
+                            <Row>
+                              <Form.Group className='mb-3' controlId='title'>
+                                <Form.Label className='TimelineObjectText'>Title</Form.Label>
+                                <Form.Control name='title' type='text' placeholder='title'/>
+                              </Form.Group>
+                            </Row>
+
+                            <Row>
+                              <Form.Group className='mb-3' controlId='description'>
+                                <Form.Label className='TimelineObjectText'>Description</Form.Label>
+                                <Form.Control
+                                  style={{height: '200px'}}
+                                  name='description'
+                                  as='textarea'
+                                  type='textarea'
+                                  placeholder='description'/>
+                              </Form.Group>
+                            </Row>
+
+                            <Row>
+                              <Col xs={2}>
+                                <Form.Group controlId='start_date'>
+                                  <Form.Label className='TimelineObjectText'>Assignment start date</Form.Label>
+                                  <Form.Control name='start_date' type='date'/>
+                                </Form.Group>
+                              </Col>
+                              <Col xs={2}>
+                                <Form.Group controlId='end_date'>
+                                  <Form.Label className='TimelineObjectText'>Assignment end date</Form.Label>
+                                  <Form.Control name='end_date' type='date'/>
+                                </Form.Group>
+                              </Col>
+                              <Col>
+                                <Form.Group className='InputDate' controlId='status'>
+                                  <Form.Label className='TimelineObjectText'>Status</Form.Label>
+                                  <Form.Control name='status' type='text' placeholder='incomplete'/>
+                                </Form.Group>
+                              </Col>
+                            </Row>
+                            <Button variant="primary" type="submit" style={{marginBottom:'15px',marginTop:'15px'}}>
+                              Submit
+                            </Button>
+                          </Form>
+                        </Container>
+                      </>
+                    );
+                  }
+
+                  return (
+                    <>
+                    </>
+                  );
+                })()}
               </div>
             );
 
