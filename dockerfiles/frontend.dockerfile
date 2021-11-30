@@ -8,4 +8,4 @@ RUN npm install
 
 COPY ./frontend ./
 
-CMD [ "npm", "start"]
+CMD [ "npm", "run", "build"]

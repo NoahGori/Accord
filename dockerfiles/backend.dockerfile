@@ -8,4 +8,6 @@ RUN npm install
 
 COPY ./backend/src/. ./src/.
 
+COPY ./backend/tests/. ./tests/.
+
 CMD [ "npm", "start"]
