@@ -8,4 +8,6 @@ RUN npm install
 
 COPY ./bot/src/. ./src/.
 
+COPY ./bot/tests/. ./tests/.
+
 CMD [ "npm", "run", "start-dev"]
