@@ -88,6 +88,14 @@ app.get('/timeline', (req, res) => {
       .catch(error => {
         res.status(500).send(error);
       });
+  } else if (req.query.discord_id != undefined) {
+    timeline.getTimelinePermissionsWithDiscordId(req.query.discord_id)
+      .then(response => {
+        res.status(200).send(response);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
   }
 
 });
