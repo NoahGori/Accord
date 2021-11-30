@@ -2,14 +2,13 @@
 
 //Query to insert member into accounts
 
-INSERT INTO github_info(github_username) VALUES('johndoe1');
-INSERT INTO accounts(discord_id,github_username,discord_username,discord_email) VALUES('207922540163760110','johndoe1','johndoe1#9068','johndoe1@gmail.com');
-
+INSERT INTO github_info(github_username) VALUES('test_username');
+INSERT INTO accounts(discord_id,github_username,discord_username,discord_email,website_key) VALUES('207922540163760335','test_username','testname#0001','test@gmail.com',3);
 
 //Query to insert new timeline into timeline, timeline_assignment_objects, and timeline_permission
-INSERT INTO timeline(id,guild_id,premium_version) VALUES('1','89825135692050333', true);
-INSERT INTO timeline_assignment_objects(timeline_id,discord_id,start_date,end_date,assignment_title,assignment_description,status) VALUES('1','207922540163760130','2022-10-22 14:22:09','2022-10-30 14:22:09','Assignment1','Assignment 1s description','active');
-INSERT INTO timeline_permission(discord_id,timeline_id,owner,editor,worker) VALUES('207922540163760130','1',false,true,false);
+INSERT INTO timeline(id,guild_id,premium_version) VALUES('5','898251356920500264', true);
+INSERT INTO timeline_assignment_objects(timeline_id,discord_id,start_date,end_date,assignment_title,assignment_description,status) VALUES('5','207922540163760335','2022-10-22 14:22:09','2022-10-30 14:22:09','Assignment1','Assignment 1s description','active');
+INSERT INTO timeline_permission(discord_id,timeline_id,owner,editor,worker) VALUES('207922540163760335','5',false,true,false);
 
 //Query into timeline_assignment_objects to receive all instances found with an input discord id, joined with timeline_permission
 SELECT DISTINCT timeline_assignment_objects.timeline_id, timeline_assignment_objects.discord_id,timeline_assignment_objects.start_date,timeline_assignment_objects.end_date,
