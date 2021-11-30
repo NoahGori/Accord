@@ -75,16 +75,21 @@
   z-index: 0;
   cursor: pointer;
   width: 2em;
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .PlusCircleFillIcon:hover {
   filter: invert(68%) sepia(72%) saturate(346%) hue-rotate(86deg) brightness(88%) contrast(87%);
-  transition: 0.6s;
+  transition: 0.3s;
 }
 
 .check_timeline_id_button {
   position: relative;
   margin: 5px 5px 0px 0px;
   font-size: 1em !important;
+}
+
+.AddTimelineObjectFormButtons {
+  margin: 15px;
+  margin-left: 0px;
 }

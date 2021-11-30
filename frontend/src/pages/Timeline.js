@@ -483,9 +483,24 @@ const Timeline = () => {
                                 </Form.Group>
                               </Col>
                             </Row>
-                            <Button variant="primary" type="submit" style={{marginBottom:'15px',marginTop:'15px'}}>
-                              Submit
-                            </Button>
+                            <Row>
+                              <Col>
+                                <Button variant="primary" type="submit" className='AddTimelineObjectFormButtons'>
+                                  Submit
+                                </Button>
+                                <Button
+                                  variant='danger'
+                                  className='AddTimelineObjectFormButtons'
+                                  onClick={(e)=> {
+                                    let dom = e.target
+                                    dom = dom.parentElement.parentElement.parentElement.parentElement
+                                    dom.style.display='None';
+                                    document.getElementsByClassName('PlusCircleFillIcon')[0].style.display='Block';
+                                  }}>
+                                  Cancel
+                                </Button>
+                              </Col>
+                            </Row>
                           </Form>
                         </Container>
                       </>
