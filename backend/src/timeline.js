@@ -108,6 +108,25 @@ const getTimelineAssignmentObjectsViaWebsiteKey = (website_key) => {// Returns t
   });
 }
 
+const getAllTimelineObjectsWithTimelineId = (timeline_id) => {
+  return new Promise(function(resolve, reject) {
+    //Temporarily places discord id from next query here for later use
+    pool.query(` 
+      SELECT *
+      FROM timeline_assignment_objects
+      WHERE timeline_id = $1;
+      `,
+      [timeline_id],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else { 
+          resolve(results);
+        }
+      });
+  });
+}
+
 // INSERTS
 
 const createNewTimeline = (id, guild_id, premium_version) =>{ //Receives axios post request from index.js, connects to db and creates new timeline
@@ -293,6 +312,7 @@ export default {
   getTimelineViaGuildId,
   getTimelineAssignmentObjectsViaTimelineIdAndDiscordId,
   getTimelineAssignmentObjectsViaWebsiteKey,
+  getAllTimelineObjectsWithTimelineId,
   createNewTimeline,
   createNewTimelineAssignmentObject,
   createNewTimelinePermission,

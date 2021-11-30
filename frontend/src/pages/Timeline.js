@@ -310,7 +310,8 @@ const TimelineObject = (obj, canEdit) => {
 
 const Timeline = () => {
   const [isLoading, set_isLoading] = useState(true);
-  const [page, set_page] = useState(false);
+  const [page, set_page] = useState(undefined);
+  const [timeline_info, set_timeline_info] = useState(undefined);
 
   // This gets our website key so we can log in securely
   const GetWebsiteKey = () => {
@@ -404,7 +405,7 @@ const Timeline = () => {
                               <Col>
                                 <Form.Group className='mb-3' controlId='discord_id'>
                                   <Form.Label className='TimelineObjectText'>Discord_id</Form.Label>
-                                  <Form.Control name='discord_id' type='text' placeholder='discord_id'/>
+                                  <Form.Control required name='discord_id' type='text' placeholder='discord_id'/>
                                   <Form.Text className="text-muted">
                                     <a href='https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'>Tutorial on how to get discord_id</a>
                                   </Form.Text>
@@ -413,7 +414,7 @@ const Timeline = () => {
                               <Col xs={3}>
                                 <Form.Group>
                                   <Form.Label className='TimelineObjectText'>timeline_id</Form.Label>
-                                  <Form.Select>
+                                  <Form.Select required>
                                     {(() => {
                                       let selectJsxArr = []
                                       editable_timelines.forEach((e) => {
