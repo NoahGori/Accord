@@ -4,17 +4,27 @@ services:
       context: .
       dockerfile: ./dockerfiles/bot.dockerfile
     env_file: ./bot/.env
+    volumes:
+      - ./bot/src:/app/src
+      - ./bot/tests:/app/tests
+    command: npm run start-dev
   backend:
     build:
       context: .
       dockerfile: ./dockerfiles/backend.dockerfile
     env_file: ./backend/.env
+    volumes:
+      - ./backend/src:/app/src
     ports:
       - "3001:3001"
+    command: npm run start-dev
   frontend:
     build:
       context: .
       dockerfile: ./dockerfiles/frontend.dockerfile
     env_file: ./frontend/.env
+    volumes:
+      - ./frontend/src:/app/src
     ports:
       - "3000:3000"
+    command: npm run start

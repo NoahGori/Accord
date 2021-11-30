@@ -1,5 +1,4 @@
 import pg from 'pg';
-
 const pool = new pg.Pool({
 	user: process.env.DB_USER,
 	host: process.env.DB_HOST,
