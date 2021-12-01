@@ -71,7 +71,7 @@ const TimelineObject = (obj, canEdit) => {
         if (error) 
           console.error(error);
         else
-        window.location.reload();
+          window.location.reload();
       }
       );
   };
@@ -335,8 +335,7 @@ const Timeline = () => {
       timeline_id: data.get('timeline_id'),
       discord_id: data.get('discord_id')
     }
-  
-    
+
     try {
       axios.post(`${backendURL}/timeline`, insertJSON).then((res) => {
         console.error(res);
@@ -356,168 +355,185 @@ const Timeline = () => {
 
   useEffect(() => {
     if (isLoading) {
-      axios.get(`${backendURL}/timeline?website_key=${website_key}`)
+      axios.get(`${backendURL}/accounts?website_key=${website_key}`)
         .then((result, error) => {
           if (error) {
             console.error(error);
           } else {
-            let jsxArr = [];
-            let canEdit = false;
-            let editable_timelines = [];
-            result.data.forEach((e) => {
-              if (Array.isArray(e)) {
-                e.forEach((ee) => {
-                  if (ee.editor || ee.owner) {
-                    jsxArr.push(TimelineObject(ee, true));
-                    editable_timelines.push(ee.timeline_id);
-                    canEdit = true;
-                  } else {
-                    jsxArr.push(TimelineObject(ee, false));
-                  }
-                });
-              } else if (e.editor || e.owner) {
-                jsxArr.push(TimelineObject(e, true));
-                editable_timelines.push(e.timeline_id);
-                canEdit = true;
-              } else {
-                jsxArr.push(TimelineObject(e, false));
-              }
-            });
-            set_page(
-              <div id='TimelinePage'>
-                {jsxArr}
-                {(() => {
-                  if (canEdit) {
-                    return (
-                      <>
-                        <Container className='d-flex align-items-center justify-content-center'>
-                          <img
-                            src={plus_circle_fill_icon}
-                            className='PlusCircleFillIcon'
-                            onClick={(e)=> {
-                              let dom = e.target;
-                              let form = dom.parentElement.nextSibling;
-                              let img = dom;
+            return axios.get(`${backendURL}/timeline?discord_id=${result.data[0].discord_id}`)
+              .then((result, error) => {
+                if (error) {
+                  console.error(error);
+                } else {
+                  let editable_timelines = [];
+                  result.data.forEach((e) => {
+                    if (e.editor || e.owner) {
+                      editable_timelines.push(e.timeline_id);
+                    }
+                  });
+                  return axios.get(`${backendURL}/timeline?website_key=${website_key}`)
+                    .then((result, error) => {
+                      if (error) {
+                        console.error(error);
+                      } else {
+                        let jsxArr = [];
+                        let canEdit = false;
+                        result.data.forEach((e) => {
+                          if (Array.isArray(e)) {
+                            e.forEach((ee) => {
+                              if (ee.editor || ee.owner) {
+                                jsxArr.push(TimelineObject(ee, true));
+                                canEdit = true;
+                              } else {
+                                jsxArr.push(TimelineObject(ee, false));
+                              }
+                            });
+                          } else if (e.editor || e.owner) {
+                            jsxArr.push(TimelineObject(e, true));
+                            canEdit = true;
+                          } else {
+                            jsxArr.push(TimelineObject(e, false));
+                          }
+                        });
+                        set_page(
+                          <div id='TimelinePage'>
+                            {jsxArr}
+                            {(() => {
+                              if (canEdit) {
+                                return (
+                                  <>
+                                    <Container className='d-flex align-items-center justify-content-center'>
+                                      <img
+                                        src={plus_circle_fill_icon}
+                                        className='PlusCircleFillIcon'
+                                        onClick={(e)=> {
+                                          let dom = e.target;
+                                          let form = dom.parentElement.nextSibling;
+                                          let img = dom;
 
-                              img.style.display='None';
-                              form.style.display='Block';
-                            }}
-                          />
-                        </Container>
-                        <Container className='TimelineObjectBox AddTimelineObjectBox' style={{paddingTop:'10px'}}>
-                          <Form onSubmit={AddTimelineObject}>
-                            <Row>
-                              <Col>
-                                <Form.Group className='mb-3' controlId='discord_id'>
-                                  <Form.Label className='TimelineObjectText'>Discord_id</Form.Label>
-                                  <Form.Control required name='discord_id' type='text' placeholder='discord_id'/>
-                                  <Form.Text className="text-muted">
-                                    <a href='https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'>Tutorial on how to get discord_id</a>
-                                  </Form.Text>
-                                </Form.Group>
-                              </Col>
-                              <Col xs={3}>
-                                <Form.Group>
-                                  <Form.Label className='TimelineObjectText'>timeline_id</Form.Label>
-                                  <Form.Select required name='timeline_id'>
-                                    {(() => {
-                                      let selectJsxArr = []
-                                      editable_timelines.forEach((e) => {
-                                        selectJsxArr.push(<option className='TimelineObjectText' value={e}>{e}</option>);
-                                      });
-                                      return (
-                                        <>
-                                          {selectJsxArr}
-                                        </>
-                                      );
-                                    })()}
-                                  </Form.Select>
-                                  <Form.Text>
-                                    <Button className='check_timeline_id_button' onClick={(e)=> {
-                                      let dom = e.target;
-                                      let timeline_id = dom.parentElement.previousSibling.value;
-                                      window.open(`${window.location.origin}/ViewTimeline?timeline_id=${timeline_id}`);
-                                    }}>
-                                    timeline information</Button>
-                                  </Form.Text>
-                                </Form.Group>
-                              </Col>
-                            </Row>
+                                          img.style.display='None';
+                                          form.style.display='Block';
+                                        }}
+                                      />
+                                    </Container>
+                                    <Container className='TimelineObjectBox AddTimelineObjectBox' style={{paddingTop:'10px'}}>
+                                      <Form onSubmit={AddTimelineObject}>
+                                        <Row>
+                                          <Col>
+                                            <Form.Group className='mb-3' controlId='discord_id'>
+                                              <Form.Label className='TimelineObjectText'>Discord_id</Form.Label>
+                                              <Form.Control required name='discord_id' type='text' placeholder='discord_id'/>
+                                              <Form.Text className="text-muted">
+                                                <a href='https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'>Tutorial on how to get discord_id</a>
+                                              </Form.Text>
+                                            </Form.Group>
+                                          </Col>
+                                          <Col xs={3}>
+                                            <Form.Group>
+                                              <Form.Label className='TimelineObjectText'>timeline_id</Form.Label>
+                                              <Form.Select required name='timeline_id'>
+                                                {(() => {
+                                                  let selectJsxArr = []
+                                                  editable_timelines.forEach((e) => {
+                                                    selectJsxArr.push(<option className='TimelineObjectText' value={e}>{e}</option>);
+                                                  });
+                                                  return (
+                                                    <>
+                                                      {selectJsxArr}
+                                                    </>
+                                                  );
+                                                })()}
+                                              </Form.Select>
+                                              <Form.Text>
+                                                <Button className='check_timeline_id_button' onClick={(e)=> {
+                                                  let dom = e.target;
+                                                  let timeline_id = dom.parentElement.previousSibling.value;
+                                                  window.open(`${window.location.origin}/ViewTimeline?timeline_id=${timeline_id}`);
+                                                }}>
+                                                  timeline information</Button>
+                                              </Form.Text>
+                                            </Form.Group>
+                                          </Col>
+                                        </Row>
 
-                            <Row>
-                              <Form.Group className='mb-3' controlId='title'>
-                                <Form.Label className='TimelineObjectText'>Title</Form.Label>
-                                <Form.Control name='title' type='text' placeholder='title'/>
-                              </Form.Group>
-                            </Row>
+                                        <Row>
+                                          <Form.Group className='mb-3' controlId='title'>
+                                            <Form.Label className='TimelineObjectText'>Title</Form.Label>
+                                            <Form.Control name='title' type='text' placeholder='title'/>
+                                          </Form.Group>
+                                        </Row>
 
-                            <Row>
-                              <Form.Group className='mb-3' controlId='description'>
-                                <Form.Label className='TimelineObjectText'>Description</Form.Label>
-                                <Form.Control
-                                  style={{height: '200px'}}
-                                  name='description'
-                                  as='textarea'
-                                  type='textarea'
-                                  placeholder='description'/>
-                              </Form.Group>
-                            </Row>
+                                        <Row>
+                                          <Form.Group className='mb-3' controlId='description'>
+                                            <Form.Label className='TimelineObjectText'>Description</Form.Label>
+                                            <Form.Control
+                                              style={{height: '200px'}}
+                                              name='description'
+                                              as='textarea'
+                                              type='textarea'
+                                              placeholder='description'/>
+                                          </Form.Group>
+                                        </Row>
 
-                            <Row>
-                              <Col xs={2}>
-                                <Form.Group controlId='start_date'>
-                                  <Form.Label className='TimelineObjectText'>Assignment start date</Form.Label>
-                                  <Form.Control name='start_date' type='date'/>
-                                </Form.Group>
-                              </Col>
-                              <Col xs={2}>
-                                <Form.Group controlId='end_date'>
-                                  <Form.Label className='TimelineObjectText'>Assignment end date</Form.Label>
-                                  <Form.Control name='end_date' type='date'/>
-                                </Form.Group>
-                              </Col>
-                              <Col>
-                                <Form.Group className='InputDate' controlId='status'>
-                                  <Form.Label className='TimelineObjectText'>Status</Form.Label>
-                                  <Form.Control name='status' type='text' placeholder='incomplete'/>
-                                </Form.Group>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <Button variant="primary" type="submit" className='AddTimelineObjectFormButtons'>
-                                  Submit
-                                </Button>
-                                <Button
-                                  variant='danger'
-                                  className='AddTimelineObjectFormButtons'
-                                  onClick={(e)=> {
-                                    let dom = e.target
-                                    dom = dom.parentElement.parentElement.parentElement.parentElement
-                                    dom.style.display='None';
-                                    document.getElementsByClassName('PlusCircleFillIcon')[0].style.display='Block';
-                                  }}>
-                                  Cancel
-                                </Button>
-                              </Col>
-                            </Row>
-                          </Form>
-                        </Container>
-                      </>
-                    );
-                  }
+                                        <Row>
+                                          <Col xs={2}>
+                                            <Form.Group controlId='start_date'>
+                                              <Form.Label className='TimelineObjectText'>Assignment start date</Form.Label>
+                                              <Form.Control name='start_date' type='date'/>
+                                            </Form.Group>
+                                          </Col>
+                                          <Col xs={2}>
+                                            <Form.Group controlId='end_date'>
+                                              <Form.Label className='TimelineObjectText'>Assignment end date</Form.Label>
+                                              <Form.Control name='end_date' type='date'/>
+                                            </Form.Group>
+                                          </Col>
+                                          <Col>
+                                            <Form.Group className='InputDate' controlId='status'>
+                                              <Form.Label className='TimelineObjectText'>Status</Form.Label>
+                                              <Form.Control name='status' type='text' placeholder='incomplete'/>
+                                            </Form.Group>
+                                          </Col>
+                                        </Row>
+                                        <Row>
+                                          <Col>
+                                            <Button variant="primary" type="submit" className='AddTimelineObjectFormButtons'>
+                                              Submit
+                                            </Button>
+                                            <Button
+                                              variant='danger'
+                                              className='AddTimelineObjectFormButtons'
+                                              onClick={(e)=> {
+                                                let dom = e.target
+                                                dom = dom.parentElement.parentElement.parentElement.parentElement
+                                                dom.style.display='None';
+                                                document.getElementsByClassName('PlusCircleFillIcon')[0].style.display='Block';
+                                              }}>
+                                              Cancel
+                                            </Button>
+                                          </Col>
+                                        </Row>
+                                      </Form>
+                                    </Container>
+                                  </>
+                                );
+                              }
 
-                  return (
-                    <>
-                    </>
-                  );
-                })()}
-              </div>
-            );
+                              return (
+                                <>
+                                </>
+                              );
+                            })()}
+                          </div>
+                        );
 
-            set_isLoading(false);
+                        set_isLoading(false);
+                      }
+                    })
+                }
+              });
           }
-        })
+        });
     }
   });
 
