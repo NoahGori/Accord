@@ -14,7 +14,8 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - docker-compose up -d --build
+  - docker-compose build
+  - docker-compose up -d
 
 script:
   - docker-compose exec bot npm test
