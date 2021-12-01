@@ -21,11 +21,3 @@ Discord.js - Bot
 Express - Backend
 
 Postgres - Database
-
-Features:
-- Forking through discord
-- Issue creation through discord
-- Assign issues through discord
-- Timeline creation
-- Account creation to save info
-- Login to frontend through discord
