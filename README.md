@@ -14,9 +14,15 @@ Probably won't need it Back End - More than likely backend Javascript/Typescript
 
 Tech Stack:
 
-MongoDB
-Discord.js
+React - Frontend
+Discord.js - Bot
+Express - Backend
+Postgres - Database
 
-Discord.js
-	1) Mongoose to connect to mongodb
-	2) dotenv
+Features:
+	- Forking through discord
+	- Issue creation through discord
+	- Assign issues through discord
+	- Timeline creation
+	- Account creation to save info
+	- Login to frontend through discord
