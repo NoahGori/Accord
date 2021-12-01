@@ -1,118 +1,115 @@
 //This is purely just to test axios calls, should be working in this current state
 import axios from 'axios';
+import { response } from 'express';
 
 const backendURL='http://localhost:3001'
 
-const testPostAccountVia_discord_id = () => {
-    console.log('casetest running');
-  axios.post(`${backendURL}/accounts`, {
-      discord_id: '20792254016376023225',
-      github_username: 'johndoe5',
-      discord_username: 'johndoe5#3215',
-      discord_email: 'johndoe5@gmail.com'
+const createNewTimeline = (id, guild_id, premium_version) =>{
+  axios.post(`${backendURL}/timeline`, {
+      id: id,
+      guild_id: guild_id,
+      premium_version: premium_version
   });
-  
-  console.log('casetest ran');
 }
 
-const testPostTimeline = () => {
-  console.log('casetest running: timeline post');
+const createNewTimelineAssignmentObject = (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status) =>{
   axios.post(`${backendURL}/timeline`, {
-    id: '2',
-    guild_id: '898251356920500264',
-    premium_version: 'true'
-});
+      timeline_id: timeline_id,
+      discord_id: discord_id,
+      start_date: start_date,
+      end_date: end_date,
+      assignment_title: assignment_title,
+      assignment_description: assignment_description,
+      status: status,
 
-console.log('casetest ran: timeline post');
+  });
 }
 
-const testPostTimelineObject = () => {
-  console.log('casetest running: timeline post');
+const createNewTimelinePermission = (discord_id, timeline_id, owner, editor, worker) =>{
   axios.post(`${backendURL}/timeline`, {
-    id: '3',
-    guild_id: '898251356920500264',
-    premium_version: 'true'
-});
-
-console.log('casetest ran: timeline post');
-return true;
+      discord_id: discord_id,
+      timeline_id: timeline_id,
+      owner: owner,
+      editor: editor,
+      worker: worker
+  });
 }
 
-const testPostTimelineAssignmentObject = () => {
-  console.log('casetest running: testPostTimelineAssignmentObject');
-  axios.post(`${backendURL}/timeline`, {
-    timeline_id: "3",
-    discord_id: "207922540163760130",
-    start_date: "2022-10-22 14:22:09",
-    end_date: "2022-10-30 14:22:09",
-    assignment_title: "Assignment3",
-    assignment_description: "Assignment 3s description",
-    status: "active",
-});
-
-console.log('casetest ran: testPostTimelineAssignmentObject');
+const deleteTimeline = (id) => {
+  axios.post(`${backendURL}/timeline`, {    //Needs to be set up like this for axios.delete or else it cannot be read
+    DELETE: true,    
+    timeline_id: id
+  });
+}
+const deleteTimelineAssignmentObject = (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status) => {
+  axios.post(`${backendURL}/timeline`, {   
+    DELETE: true,    
+    timeline_id: timeline_id,
+    discord_id: discord_id,
+    start_date: start_date,
+    end_date: end_date,
+    assignment_title: assignment_title,
+    assignment_description: assignment_description,
+    status: status,
+  });
 }
 
-const testPostTimelinePermission = () => {
-  console.log('casetest running: testPostTimelinePermission');
-  axios.post(`${backendURL}/timeline`, {
-    discord_id: "207922540163760130",
-    timeline_id: "3",
-    owner: false,
-    editor: false,
-    worker: true
-});
-console.log('casetest ran: testPostTimelinePermission');
+const deleteTimelinePermission = (discord_id, timeline_id, owner, editor, worker) => {
+  axios.post(`${backendURL}/timeline?`, {   
+    DELETE: true,    
+    discord_id: discord_id,
+    timeline_id: timeline_id,
+    owner: owner,
+    editor: editor,
+    worker: worker
+  });
 }
 
-const testDeleteTimeline = () => {
-  console.log('casetest running: testDeleteTimeline');
-  axios.delete(`${backendURL}/timeline`, {
-    data:{    //Needs to be set up like this for axios.delete or else it cannot be read
-      timeline_id: "3"
-    }
-});
-console.log('casetest ran: testDeleteTimeline');
+
+const getAllTimelineObjectsWithTimelineId = (timeline_id) => {
+  return axios
+      .get(`${backendURL}/timeline?timeline_id=${timeline_id}&ALL_OBJECTS=true`)
+      .then(response => {
+          console.log(response.data);
+          return response.data
+      })
 }
 
-const testDeleteTimelineAssignmentObjects = () => {
-  console.log('casetest running: testDeleteTimelineAssignmentObjects');
-  axios.delete(`${backendURL}/timeline`, {
-    data:{    //Needs to be set up like this for axios.delete or else it cannot be read
-      timeline_id: "3",
-      discord_id: "207922540163760130",
-      start_date: "2022-10-22 14:22:09",
-      end_date: "2022-10-30 14:22:09",
-      assignment_title: "Assignment3",
-      assignment_description: "Assignment 3s description",
-      status: "active",
-    }
-});
-console.log('casetest ran: testDeleteTimelineAssignmentObjects');
+const getTimelineAssignmentObjectsViaWebsiteKeyAsync = (website_key) => {
+  return axios
+      .get(`${backendURL}/timeline?website_key=${website_key}`)
+      .then(response => {
+        console.log(response.data);
+          return response.data
+      })
 }
 
-const testDeleteTimelinePermission = () => {
-  console.log('casetest running: testDeleteTimelinePermission');
-  axios.delete(`${backendURL}/timeline`, {
-    data:{    //Needs to be set up like this for axios.delete or else it cannot be read
-      timeline_id: "3",
-      discord_id: "207922540163760130"
-    }
-});
-console.log('casetest ran: testDeleteTimelinePermission');
-}
+
 
 //testPostAccountVia_discord_id();
-//testPostTimeline();
+//createNewTimeline();
+var id = 6;
+var discord_id = "207922540163760335";
+var guild_id = "898251356920500264";
+var start_date = "2022-10-22 14:22:09";
+var end_date = "2022-10-23 14:22:09";
+var assignment_title = "Assignment1";
+var assignment_description = "Assignment 1s description";
+var status = "active";
 
-/*if(testPostTimelineObject() == true){     //Used to test timeline create
-  testPostTimelineAssignmentObject();
-  testPostTimelinePermission();
-}*/
+//createNewTimeline(id,guild_id,true);
+//createNewTimelineAssignmentObject(id,discord_id,start_date,end_date,assignment_title,assignment_description,status);
+//createNewTimelinePermission(discord_id, id, true, false, false);
 
-//testDeleteTimeline();                   //used to test timeline delete
-//testDeleteTimelineAssignmentObjects();
-//testDeleteTimelinePermission();
+//getTimelineAssignmentObjectsViaWebsiteKeyAsync(3);
+
+deleteTimeline(id);
+//deleteTimelineAssignmentObject(id,discord_id,start_date,end_date,assignment_title,assignment_description,status);
+//deleteTimelinePermission(discord_id, id);
 
 
-
+/*testGetTimelineAssignmentObjectsViaWebsiteKey(3)
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => console.error(error));*/

@@ -233,6 +233,7 @@ const deleteTimeline = (timeline_id) =>{  //Receives axios post request from ind
                     if (error) {
                       reject(error);
                     } else {
+                      console.log(`Deleted timeline '${timeline_id}' from timeline`);
                       resolve(`Deleted timeline '${timeline_id}' from timeline`);
                     }
                   });
