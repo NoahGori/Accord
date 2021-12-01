@@ -3,18 +3,18 @@ services:
     build: 
       context: .
       dockerfile: ./dockerfiles/bot.dockerfile
-    env_file: ./bot/.env
+    env_file: ./bot.env
   backend:
     build:
       context: .
       dockerfile: ./dockerfiles/backend.dockerfile
-    env_file: ./backend/.env
+    env_file: ./backend.env
     ports:
       - "3001:3001"
   frontend:
     build:
       context: .
       dockerfile: ./dockerfiles/frontend.dockerfile
-    env_file: ./frontend/.env
+    env_file: ./frontend.env
     ports:
       - "3000:3000"

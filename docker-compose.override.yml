@@ -3,7 +3,7 @@ services:
     build: 
       context: .
       dockerfile: ./dockerfiles/bot.dockerfile
-    env_file: ./bot/.env
+    env_file: ./bot.env
     volumes:
       - ./bot/src:/app/src
       - ./bot/tests:/app/tests
@@ -12,7 +12,7 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/backend.dockerfile
-    env_file: ./backend/.env
+    env_file: ./backend.env
     volumes:
       - ./backend/src:/app/src
     ports:
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/frontend.dockerfile
-    env_file: ./frontend/.env
+    env_file: ./frontend.env
     volumes:
       - ./frontend/src:/app/src
     ports:
