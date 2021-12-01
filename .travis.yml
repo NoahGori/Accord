@@ -1,11 +1,10 @@
-language: generic
 sudo: required
 
 services:
   - docker
 
 env:
-  DOCKER_COMPOSE_VERSION: 2.1.1
+  DOCKER_COMPOSE_VERSION: v2.1.1
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
