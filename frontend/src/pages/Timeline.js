@@ -354,7 +354,6 @@ const Timeline = () => {
 
   function waitFor(callback) {
     var interval = setInterval(function() {
-    console.log(editableTimelineIdForInsert);
       if (editableTimelineIdForInsert){
         clearInterval(interval);
         callback();
@@ -404,16 +403,7 @@ const Timeline = () => {
             let jsxArr = [];
             let canEdit = false;
             result.data.forEach((e) => {
-              if (Array.isArray(e)) {
-                e.forEach((ee) => {
-                  if (ee.editor || ee.owner) {
-                    jsxArr.push(TimelineObject(ee, true));
-                    canEdit = true;
-                  } else {
-                    jsxArr.push(TimelineObject(ee, false));
-                  }
-                });
-              } else if (e.editor || e.owner) {
+              if (e.editor || e.owner) {
                 jsxArr.push(TimelineObject(e, true));
                 canEdit = true;
               } else {
