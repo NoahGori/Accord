@@ -1,3 +1,9 @@
+frontend.env
+backend.env
+bot.env
+.env
+
+
 # Logs
 logs
 *.log
