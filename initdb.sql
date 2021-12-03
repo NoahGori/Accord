@@ -107,15 +107,47 @@ CREATE TABLE "guild_members" (
 -- Initialize default values
 INSERT INTO github_info (github_username)
 VALUES ('dogunbound');
+INSERT INTO github_info (github_username)
+VALUES ('NoahGori');
 
 INSERT INTO accounts (discord_id, github_username, discord_username, discord_email, website_key)
 VALUES ('207922540163760130', 'dogunbound', 'dogUnbound#8593', 'dogunbound5@gmail.com', '1');
+INSERT INTO accounts (discord_id, github_username, discord_username, discord_email, website_key)
+VALUES ('222915151429369857', 'NoahGori', 'NoahG', 'Test@gmail.com', '2');
 
 INSERT INTO guild_info (guild_id)
 VALUES ('898251356920500264');
 
 INSERT INTO guild_members (guild_id, discord_id)
 VALUES ('898251356920500264', '207922540163760130');
+INSERT INTO guild_members (guild_id, discord_id)
+VALUES ('898251356920500264', '222915151429369857');
 
 INSERT INTO timeline (guild_id, premium_version)
 VALUES ('898251356920500264', true);
+
+INSERT INTO timeline_permission (discord_id, timeline_id, owner, editor, worker)
+VALUES ('207922540163760130', 1, true, true, false);
+INSERT INTO timeline_permission (discord_id, timeline_id, owner, editor, worker)
+VALUES ('222915151429369857', 1, false, false, true);
+
+INSERT INTO guild_info (guild_id) 
+VALUES ('916113056700968991');
+
+INSERT INTO guild_members (guild_id, discord_id) 
+VALUES ('916113056700968991', '207922540163760130');
+
+INSERT INTO timeline (guild_id, premium_version)
+VALUES ('916113056700968991', true);
+
+INSERT INTO timeline_permission (discord_id, timeline_id, owner, editor, worker)
+VALUES ('207922540163760130', '2', true, true, false);
+INSERT INTO timeline_permission (discord_id, timeline_id, owner, editor, worker)
+VALUES ('222915151429369857', '2', true, true, false);
+
+INSERT INTO timeline_assignment_objects (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status)
+VALUES ('2', '222915151429369857', NOW(), NOW(), 'test2.1', 'WHy is it not working', 'incomplete');
+INSERT INTO timeline_assignment_objects (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status)
+VALUES ('2', '222915151429369857', NOW(), NOW(), 'test2.2', 'test', 'incomplete');
+INSERT INTO timeline_assignment_objects (timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status)
+VALUES ('2', '222915151429369857', NOW(), NOW(), 'test2.3', 'test', 'incomplete');
