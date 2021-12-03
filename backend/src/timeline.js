@@ -191,14 +191,12 @@ const deleteTimeline = (timeline_id) =>{  //Receives axios post request from ind
         if (error) {
           reject(error);
         } else {
-          console.log(`Deleted timeline '${timeline_id}' from timeline_assignment_objects`);
           pool.query(` 
             DELETE FROM timeline_permission WHERE timeline_id = '${timeline_id}';`
             , (error) => {
               if (error) {
                 reject(error);
               } else {
-                console.log(`Deleted timeline '${timeline_id}' from timeline_permission`);
                 pool.query(` 
                 DELETE FROM timeline WHERE id = '${timeline_id}';`
                   , (error) => {
@@ -220,16 +218,11 @@ const deleteTimelineAssignmentObject = (timeline_id, discord_id, start_date, end
     pool.query(`
       DELETE FROM timeline_assignment_objects
       WHERE timeline_id=$1
-      AND discord_id=$2
-      AND start_date >= ($3::timestamp - INTERVAL '1' day) 
-      AND start_date <= ($3::timestamp + INTERVAL '1' day)
-      AND end_date >= ($4::timestamp - INTERVAL '1' day) 
-      AND end_date <= ($4::timestamp + INTERVAL '1' day)
-      AND assignment_title=$5
-      AND assignment_description=$6
-      AND status=$7;
+      AND assignment_title=$2
+      AND assignment_description=$3
+      AND status=$4;
     `,
-      [timeline_id, discord_id, start_date, end_date, assignment_title, assignment_description, status],
+      [timeline_id, assignment_title, assignment_description, status],
       (error) => {
         if (error)
           reject(error);
@@ -259,33 +252,28 @@ const deleteTimelinePermission = (timeline_id,discord_id) =>{ // Receives axios 
 // UPDATES
 const updateTimelineAssignmentObject = (timeline_id, discord_id, old_start_date, old_end_date, old_assignment_title, old_assignment_description, old_status, new_start_date, new_end_date, new_assignment_title, new_assignment_description, new_status) => { // Takes an old and a new timeline object and updates the entire thing!!!
   return new Promise(function(resolve, reject) {
+    discord_id = String(discord_id);
     pool.query(`
         UPDATE timeline_assignment_objects
-        SET start_date=$8,
-          end_date=$9,
-          assignment_title=$10,
-          assignment_description=$11,
-          status=$12
+        SET start_date=$5,
+          end_date=$6,
+          assignment_title=$7,
+          assignment_description=$8,
+          status=$9
         WHERE timeline_id=$1
-        AND discord_id=$2
-        AND start_date >= ($3::timestamp - interval '1' day) AND start_date <= ($3::timestamp + interval '1' day)
-        AND end_date >= ($4::timestamp - interval '1' day) AND end_date <= ($4::timestamp + interval '1' day)
-        AND assignment_title=$5
-        AND assignment_description=$6
-        AND status=$7;
+        AND assignment_title=$2
+        AND assignment_description=$3
+        AND status=$4;
       `, 
       [timeline_id,                     // 1
-        discord_id,                     // 2
-        old_start_date,                 // 3
-        old_end_date,                   // 4
-        old_assignment_title,           // 5
-        old_assignment_description,     // 6
-        old_status,                     // 7
-        new_start_date,                 // 8
-        new_end_date,                   // 9
-        new_assignment_title,           // 10
-        new_assignment_description,     // 11
-        new_status],                    // 12
+        old_assignment_title,           // 2
+        old_assignment_description,     // 3
+        old_status,                     // 4
+        new_start_date,                 // 5
+        new_end_date,                   // 6
+        new_assignment_title,           // 7 
+        new_assignment_description,     // 8
+        new_status],                    // 9
       (error) => {
         if (error) {
           reject(error);
