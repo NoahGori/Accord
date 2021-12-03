@@ -41,7 +41,6 @@ const TimelineObject = (obj, canEdit) => {
     event.preventDefault();
 
     const data = new FormData(event.target);
-    alert(`${data.get('start_date')}, ${data.get('end_date')}`)
     let start_date=data.get('start_date').split('-');
     start_date= new Date(Date(start_date[2], start_date[1]-1, start_date[0])).toISOString().replace('T',' ').replace('Z','');
     let end_date=data.get('end_date').split('-');
