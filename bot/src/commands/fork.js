@@ -22,14 +22,15 @@ module.exports = {
     const repo = interaction.options.getString("repo");
     const owner = interaction.options.getString("owner");
     await interaction.deferReply({ ephemeral: true });
-    const user = axios.get(
-      `http://backend:3001/accounts?discord_id=${interaction.member.user.id}`
+    const user = await axios.get(
+      `http://backend:3001/ghauth?discord_id=${interaction.member.user.id}`
     );
-    const token = user.body.token;
+    const token = user.data[0].oauth_token;
+    console.log(token);
     const octokit = new Octokit({
       auth: token,
     });
-    const fork = await octokit.issues.createFork({
+    const fork = await octokit.rest.repos.createFork({
       owner: owner,
       repo: repo,
     });

@@ -34,18 +34,18 @@ module.exports = {
     //Get command options
     const owner = interaction.options.getString("owner");
     const issue = interaction.options.getString("issue");
-    const ae = interaction.options.getUser("user");
+    const ae = interaction.options.getUser("assignee");
     const repo = interaction.options.getString("repo");
     // Get the github username of the assignee from their discord id
     const response = await axios.get(
-      `http://backend:3001/accounts?discord_id=${ae}`
+      `http://backend:3001/accounts?discord_id=${ae.id}`
     );
-    const assignee = response.body.github_username;
+    const assignee = response.data[0].github_username;
     // Authenticate as user who issued command
     const user = await axios.get(
-      `http://backend:3001/accounts?discord_id=${interaction.member.user.id}`
+      `http://backend:3001/ghauth?discord_id=${interaction.member.user.id}`
     );
-    const token = user.body.token;
+    const token = user.data[0].oauth_token;
     const octokit = new Octokit({
       auth: token,
     });

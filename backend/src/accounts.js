@@ -65,29 +65,31 @@ const createNewAccount = (
   });
 
   //Then inputs the account values into db
-  promise1.then(() => {
+  return promise1.then(() => {
     pool.query(
       ` 
       INSERT INTO accounts(discord_id, github_username, discord_username, discord_email)
       VALUES($1, $2, $3, $4);`,
       [discord_id, github_username, discord_username, discord_email],
-      (reason) => {
-        console.error(reason);
+      (error) => {
+        if (error) {
+          console.log(error);
+        }
       }
     );
   });
 };
 
 const getAuthViaDiscordId = (discord_id) => {
-  return new Promise(function (resolve, reejct) {
+  return new Promise(function (resolve, reject) {
     pool.query(
       `
 			select oauth_token
-			from github_oauth_token
+			from github_ouath_token
 			where github_username=(
 				select github_username
 				from accounts
-				where discord_id='$1
+				where discord_id=$1
         );`,
       [discord_id],
       (error, results) => {
@@ -102,9 +104,10 @@ const getAuthViaDiscordId = (discord_id) => {
 };
 
 const createGithubAuth = (github_username, oauth_token) => {
+  console.log("Attempting to add to database");
   var promise1 = new Promise(function (resolve, reject) {
     pool.query(
-      `INSERT INTO github_oauth_token(github_username, oauth_token)
+      `INSERT INTO github_ouath_token(github_username, oauth_token)
 			  VALUES($1, $2);`,
       [github_username, oauth_token],
       (err) => {
@@ -122,4 +125,6 @@ export default {
   getUserViaWebsiteKey,
   getUserViaDiscordId,
   createNewAccount,
+  getAuthViaDiscordId,
+  createGithubAuth,
 };

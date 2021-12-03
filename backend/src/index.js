@@ -53,6 +53,8 @@ app.post("/accounts", (req, res) => {
       req.body.discord_email
     );
   }
+  console.log("Account Created")
+  return res.status(200).send();
 });
 
 // GET timeline
@@ -276,6 +278,7 @@ app.put("/timeline", (req, res) => {
 });
 
 app.get("/ghauth", (req, res) => {
+  console.log("Got Auth Request")
   if (req.query.discord_id != undefined) {
     accounts
       .getAuthViaDiscordId(req.query.discord_id)
@@ -283,18 +286,22 @@ app.get("/ghauth", (req, res) => {
         res.status(200).send(response);
       })
       .catch((err) => {
+        console.log(err);
         res.status(500).send(err);
       });
   }
 });
 
 app.post("/ghauth", (req, res) => {
+  console.log("posting github info")
   if (
     req.body.github_username != undefined &&
     req.body.oauth_token != undefined
   ) {
     accounts.createGithubAuth(req.body.github_username, req.body.oauth_token);
   }
+  console.log("Auth Saved")
+  return res.status(200).send()
 });
 
 // Listen

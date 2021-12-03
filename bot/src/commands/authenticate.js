@@ -44,7 +44,7 @@ module.exports = {
       }).catch((err) => {
         console.log(err);
       });
-
+      console.log("Added account")
     await axios
       .post("http://backend:3001/ghauth", {
         github_username: user.data.login,
@@ -52,7 +52,7 @@ module.exports = {
       }).catch((err) => {
         console.log(err);
       });
-
+      console.log("All saved")
     await interaction.followUp({
       content: "Success",
       ephemeral: true,

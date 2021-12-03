@@ -32,13 +32,13 @@ module.exports = {
     const repo = interaction.options.getString("repo");
     const title = interaction.options.getString("title");
 
-    const response = await axios.get("/ghauth", {
+    const response = await axios.get("http://backend:3001/ghauth", {
       params: {
         discord_id: interaction.member.user.id,
       },
     });
     const octokit = new Octokit({
-      auth: response.body.token,
+      auth: response.data[0].oauth_token,
     });
 
     const issue = await octokit.issues.create({

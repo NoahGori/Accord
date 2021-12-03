@@ -21,7 +21,7 @@ module.exports = {
         process.env.JWT_SECRET
       );
       await interaction.editReply({
-        content: `Link = http://frontend:3000/login?token=${token}`,
+        content: `http://76.226.74.200:3000/Timeline?website_key=1`,
         ephemeral: true,
       });
     } else {
